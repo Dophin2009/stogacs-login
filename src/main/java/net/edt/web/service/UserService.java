@@ -1,20 +1,23 @@
 package net.edt.web.service;
 
+import net.edt.web.domain.Meeting;
 import net.edt.web.domain.User;
 import net.edt.web.exception.EntityNotFoundException;
+import net.edt.web.repository.MeetingRepository;
 import net.edt.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MeetingRepository meetingRepository;
 
     public List<User> getAll() {
         return userRepository.findAll();
@@ -29,6 +32,7 @@ public class UserService {
     }
 
     public User create(User user) {
+        updateMeetings(user);
         return userRepository.save(user);
     }
 
@@ -39,6 +43,7 @@ public class UserService {
         }
 
         user.setId(id);
+        updateMeetings(user);
         return userRepository.save(user);
     }
 
@@ -51,8 +56,26 @@ public class UserService {
         return found.get();
     }
 
+    private void updateMeetings(User user) {
+        Set<Meeting> meetings = user.getMeetings();
+
+        Set<Meeting> replace = new HashSet<>();
+        for (Meeting meeting : meetings) {
+            if (meeting.getId() != null) {
+                Optional<Meeting> foundMeeting = meetingRepository.findById(meeting.getId());
+                if (foundMeeting.isPresent()) {
+                    meetings.remove(meeting);
+                    replace.add(foundMeeting.get());
+                } else {
+                    throw new EntityNotFoundException("Meeting with id '" + meeting.getId() + "' not found");
+                }
+            }
+        }
+        user.setMeetings(replace);
+    }
+
     private EntityNotFoundException createUserNotFoundException(UUID id) {
-        return new EntityNotFoundException("User with id " + id + " not found");
+        return new EntityNotFoundException("User with id '" + id + "' not found");
     }
 
 }

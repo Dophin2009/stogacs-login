@@ -27,9 +27,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(errorResponse);
     }
 
-    @ExceptionHandler(InvalidUUIDException.class)
-    protected ResponseEntity<Object> handleInvalidUUID(InvalidUUIDException ex) {
-        ServiceError errorResponse = new ServiceError(HttpStatus.BAD_REQUEST, "Invalid UUID in request", ex);
+    @ExceptionHandler(InvalidIDException.class)
+    protected ResponseEntity<Object> handleInvalidUUID(InvalidIDException ex) {
+        ServiceError errorResponse = new ServiceError(HttpStatus.BAD_REQUEST, "Invalid id in request", ex);
         return buildResponseEntity(errorResponse);
     }
 

@@ -1,7 +1,7 @@
 package net.edt.web.controller;
 
 import net.edt.web.domain.User;
-import net.edt.web.exception.InvalidUUIDException;
+import net.edt.web.exception.InvalidIDException;
 import net.edt.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,31 +26,35 @@ public class UserController {
         try {
             return userService.getFromId(UUID.fromString(id));
         } catch (IllegalArgumentException ex) {
-            throw new InvalidUUIDException("Invalid UUID '" + id + "'", ex);
+            throw createInvalidUserIDException(id);
         }
     }
 
     @PostMapping("/users")
-    public User create(@Valid @RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         return userService.create(user);
     }
 
     @PutMapping("/users/{id}")
-    public User update(@PathVariable(name = "id") String id, @Valid @RequestBody User user) {
+    public User updateUser(@PathVariable(name = "id") String id, @Valid @RequestBody User user) {
         try {
             return userService.update(UUID.fromString(id), user);
         } catch (IllegalArgumentException ex) {
-            throw new InvalidUUIDException("Invalid UUID '" + id + "'", ex);
+            throw createInvalidUserIDException(id);
         }
     }
 
     @DeleteMapping("/users/{id}")
-    public User delete(@PathVariable(name = "id") String id) {
+    public User deleteUser(@PathVariable(name = "id") String id) {
         try {
             return userService.remove(UUID.fromString(id));
         } catch (IllegalArgumentException ex) {
-            throw new InvalidUUIDException("Invalid UUID'" + id + "'", ex);
+            throw createInvalidUserIDException(id);
         }
+    }
+
+    private InvalidIDException createInvalidUserIDException(String id) {
+        return new InvalidIDException("User with id '" + id + "' not found");
     }
 
 }
