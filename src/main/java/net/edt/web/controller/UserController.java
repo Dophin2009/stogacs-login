@@ -11,17 +11,18 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/admin/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> retrieveAllUsers() {
         return userService.getAll();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User retrieveUser(@PathVariable(name = "id") String id) {
         try {
             return userService.getFromId(UUID.fromString(id));
@@ -30,12 +31,12 @@ public class UserController {
         }
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         return userService.create(user);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     public User updateUser(@PathVariable(name = "id") String id, @Valid @RequestBody User user) {
         try {
             return userService.update(UUID.fromString(id), user);
@@ -44,7 +45,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public User deleteUser(@PathVariable(name = "id") String id) {
         try {
             return userService.remove(UUID.fromString(id));
@@ -54,7 +55,7 @@ public class UserController {
     }
 
     private InvalidIDException createInvalidUserIDException(String id) {
-        return new InvalidIDException("User with id '" + id + "' not found");
+        return new InvalidIDException("Invalid UUID '" + id + "' in request");
     }
 
 }

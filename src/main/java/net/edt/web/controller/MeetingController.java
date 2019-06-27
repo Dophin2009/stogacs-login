@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/admin/meetings")
 public class MeetingController {
 
     @Autowired
@@ -18,12 +19,12 @@ public class MeetingController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/meetings")
+    @GetMapping
     public List<Meeting> retrieveAllMeetings() {
         return meetingService.getAll();
     }
 
-    @GetMapping("/meetings/{id}")
+    @GetMapping("/{id}")
     public Meeting retrieveMeeting(@PathVariable(value = "id") String id) {
         try {
             return meetingService.getFromId(Long.parseLong(id));
@@ -32,13 +33,13 @@ public class MeetingController {
         }
     }
 
-    @PostMapping("/meetings")
+    @PostMapping
     public Meeting createMeeting(@RequestBody Meeting meeting) {
         return meetingService.create(meeting);
     }
 
     private InvalidIDException createInvalidMeetingIDException(String id) {
-        return new InvalidIDException("Meeting with id '" + id + "' not found");
+        return new InvalidIDException("Invalid meeting ID '" + id + "' in request");
     }
 
 }
