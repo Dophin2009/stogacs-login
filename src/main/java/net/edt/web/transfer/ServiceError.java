@@ -1,4 +1,4 @@
-package net.edt.web.domain;
+package net.edt.web.transfer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.http.HttpStatus;
