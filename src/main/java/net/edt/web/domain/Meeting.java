@@ -6,8 +6,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,11 +18,9 @@ public class Meeting {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @NotNull(message = "Date required")
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
 
     @ManyToMany(mappedBy = "meetings")
     private Set<User> users = new HashSet<>();
@@ -54,11 +51,11 @@ public class Meeting {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

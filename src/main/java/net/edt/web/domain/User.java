@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +19,6 @@ public class User {
     @Column(name = "id", length = 16, updatable = false, nullable = false)
     private UUID id;
 
-    @NotNull(message = "Name required")
     @Column(name = "name", nullable = false)
     private String name;
 

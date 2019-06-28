@@ -1,14 +1,17 @@
 package net.edt.web.controller;
 
 import net.edt.web.domain.User;
-import net.edt.web.exception.InvalidIDException;
+import net.edt.web.exception.InvalidFormatException;
 import net.edt.web.service.UserService;
+import net.edt.web.transfer.UserDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/users")
@@ -17,45 +20,64 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @GetMapping
-    public List<User> retrieveAllUsers() {
-        return userService.getAll();
+    public List<UserDto> retrieveAllUsers() {
+        List<User> users = userService.getAll();
+        return users.stream().map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public User retrieveUser(@PathVariable(name = "id") String id) {
+    public UserDto retrieveUser(@PathVariable(name = "id") String id) {
         try {
-            return userService.getFromId(UUID.fromString(id));
+            User user = userService.getFromId(UUID.fromString(id));
+            return convertToDto(user);
         } catch (IllegalArgumentException ex) {
             throw createInvalidUserIDException(id);
         }
     }
 
     @PostMapping
-    public User createUser(@Valid @RequestBody User user) {
-        return userService.create(user);
+    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+        User converted = convertToEntity(userDto);
+        User newUser = userService.create(converted);
+        return convertToDto(newUser);
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable(name = "id") String id, @Valid @RequestBody User user) {
+    public UserDto updateUser(@PathVariable(name = "id") String id, @Valid @RequestBody UserDto userDto) {
         try {
-            return userService.update(UUID.fromString(id), user);
+            User toPut = convertToEntity(userDto);
+            User updated = userService.update(UUID.fromString(id), toPut);
+            return convertToDto(updated);
         } catch (IllegalArgumentException ex) {
             throw createInvalidUserIDException(id);
         }
     }
 
     @DeleteMapping("/{id}")
-    public User deleteUser(@PathVariable(name = "id") String id) {
+    public UserDto deleteUser(@PathVariable(name = "id") String id) {
         try {
-            return userService.remove(UUID.fromString(id));
+            User removed = userService.remove(UUID.fromString(id));
+            return convertToDto(removed);
         } catch (IllegalArgumentException ex) {
             throw createInvalidUserIDException(id);
         }
     }
 
-    private InvalidIDException createInvalidUserIDException(String id) {
-        return new InvalidIDException("Invalid UUID '" + id + "' in request");
+    private UserDto convertToDto(User user) {
+        return modelMapper.map(user, UserDto.class);
+    }
+
+    private User convertToEntity(UserDto userDto) {
+        return modelMapper.map(userDto, User.class);
+    }
+
+    private InvalidFormatException createInvalidUserIDException(String id) {
+        return new InvalidFormatException("Invalid UUID '" + id + "' in request");
     }
 
 }
