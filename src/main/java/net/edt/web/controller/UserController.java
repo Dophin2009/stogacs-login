@@ -1,10 +1,10 @@
 package net.edt.web.controller;
 
+import net.edt.web.converter.UserDtoConverter;
 import net.edt.web.domain.User;
 import net.edt.web.exception.InvalidFormatException;
 import net.edt.web.service.UserService;
 import net.edt.web.transfer.UserDto;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +21,12 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private UserDtoConverter userDtoConverter;
 
     @GetMapping
     public List<UserDto> retrieveAllUsers() {
         List<User> users = userService.getAll();
-        return users.stream().map(this::convertToDto)
+        return users.stream().map(userDtoConverter::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -34,7 +34,7 @@ public class UserController {
     public UserDto retrieveUser(@PathVariable(name = "id") String id) {
         try {
             User user = userService.getFromId(UUID.fromString(id));
-            return convertToDto(user);
+            return userDtoConverter.convertToDto(user);
         } catch (IllegalArgumentException ex) {
             throw createInvalidUserIDException(id);
         }
@@ -42,17 +42,17 @@ public class UserController {
 
     @PostMapping
     public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        User converted = convertToEntity(userDto);
+        User converted = userDtoConverter.convertToEntity(userDto);
         User newUser = userService.create(converted);
-        return convertToDto(newUser);
+        return userDtoConverter.convertToDto(newUser);
     }
 
     @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable(name = "id") String id, @Valid @RequestBody UserDto userDto) {
         try {
-            User toPut = convertToEntity(userDto);
+            User toPut = userDtoConverter.convertToEntity(userDto);
             User updated = userService.update(UUID.fromString(id), toPut);
-            return convertToDto(updated);
+            return userDtoConverter.convertToDto(updated);
         } catch (IllegalArgumentException ex) {
             throw createInvalidUserIDException(id);
         }
@@ -62,18 +62,10 @@ public class UserController {
     public UserDto deleteUser(@PathVariable(name = "id") String id) {
         try {
             User removed = userService.remove(UUID.fromString(id));
-            return convertToDto(removed);
+            return userDtoConverter.convertToDto(removed);
         } catch (IllegalArgumentException ex) {
             throw createInvalidUserIDException(id);
         }
-    }
-
-    private UserDto convertToDto(User user) {
-        return modelMapper.map(user, UserDto.class);
-    }
-
-    private User convertToEntity(UserDto userDto) {
-        return modelMapper.map(userDto, User.class);
     }
 
     private InvalidFormatException createInvalidUserIDException(String id) {
