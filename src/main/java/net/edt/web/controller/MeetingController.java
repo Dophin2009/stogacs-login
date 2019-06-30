@@ -40,6 +40,7 @@ public class MeetingController {
 
     @PostMapping
     public MeetingDto createMeeting(@Valid @RequestBody MeetingDto meetingDto) {
+        meetingDto.setId(null);
         Meeting converted = meetingDtoConverter.convertToEntity(meetingDto);
         Meeting newMeeting = meetingService.create(converted);
         return meetingDtoConverter.convertToDto(newMeeting);

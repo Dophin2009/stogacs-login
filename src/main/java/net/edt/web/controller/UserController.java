@@ -42,6 +42,7 @@ public class UserController {
 
     @PostMapping
     public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+        userDto.setId(null);
         User converted = userDtoConverter.convertToEntity(userDto);
         User newUser = userService.create(converted);
         return userDtoConverter.convertToDto(newUser);
@@ -49,6 +50,10 @@ public class UserController {
 
     @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable(name = "id") String id, @Valid @RequestBody UserDto userDto) {
+        if (!id.equals(userDto.getId())) {
+            throw new InvalidFormatException("Property 'id' may not be changed");
+        }
+
         try {
             User toPut = userDtoConverter.convertToEntity(userDto);
             User updated = userService.update(UUID.fromString(id), toPut);
