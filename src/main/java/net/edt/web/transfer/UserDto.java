@@ -5,20 +5,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 public class UserDto {
 
+    @NotNull(message = "must not be null")
     private String id;
 
-    @NotNull(message = "Name required")
+    @NotNull(message = "must not be null")
     private String name;
 
     @JsonIgnoreProperties({"users"})
     private Set<MeetingDto> meetings = new HashSet<>();
 
-    public UUID getId() {
-        return id == null ? null : UUID.fromString(id);
+    public String getId() {
+        return id;
     }
 
     public void setId(String id) {
