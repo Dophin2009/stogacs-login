@@ -63,12 +63,12 @@ public class UserService {
         for (Meeting meeting : meetings) {
             if (meeting.getId() != null) {
                 Optional<Meeting> foundMeeting = meetingRepository.findById(meeting.getId());
-                if (foundMeeting.isPresent()) {
-                    meetings.remove(meeting);
-                    replace.add(foundMeeting.get());
-                } else {
+                if (!foundMeeting.isPresent()) {
                     throw new EntityNotFoundException("Meeting with id '" + meeting.getId() + "' not found");
                 }
+
+                meetings.remove(meeting);
+                replace.add(foundMeeting.get());
             }
         }
         user.setMeetings(replace);
