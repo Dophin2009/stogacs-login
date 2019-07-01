@@ -1,4 +1,4 @@
-package net.edt.configuration.beans;
+package net.edt.web.bean;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
