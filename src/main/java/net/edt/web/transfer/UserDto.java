@@ -2,6 +2,7 @@ package net.edt.web.transfer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.HashSet;
@@ -16,6 +17,12 @@ public class UserDto {
 
     @NotNull(message = "must not be null")
     private String name;
+
+    @NotNull(message = "must not be null")
+    private Integer grade;
+
+    @Email(message = "incorrect format")
+    private String email;
 
     @JsonProperty(value = "signin_request_ids")
     private Set<@Pattern(regexp = UUID_REGEXPR_CI,
@@ -36,6 +43,22 @@ public class UserDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Set<String> getSignInRequestIds() {

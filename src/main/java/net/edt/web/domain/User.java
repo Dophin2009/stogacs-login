@@ -21,6 +21,12 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "grade", nullable = false)
+    private Integer grade;
+
+    @Column(name = "email")
+    private String email;
+
     @OneToMany(mappedBy = "user")
     private Set<SignInRequest> signInRequests = new HashSet<>();
 
@@ -38,6 +44,22 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Set<SignInRequest> getSignInRequests() {
