@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateTimeFormat {
 
-    DateTimeType type() default DateTimeType.DATE_TIME;
+    DateTimeType type();
 
     String format() default "";
 
