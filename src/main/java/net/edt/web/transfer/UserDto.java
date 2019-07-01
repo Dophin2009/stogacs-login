@@ -2,9 +2,7 @@ package net.edt.web.transfer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,15 +10,19 @@ import static net.edt.web.validation.constraint.PatternConstants.UUID_REGEXPR_CI
 
 public class UserDto {
 
+    @NotEmpty(message = "must not be empty")
     @NotNull(message = "must not be null")
     private String id;
 
+    @NotEmpty(message = "must not be empty")
     @NotNull(message = "must not be null")
     private String name;
 
+    @Min(value = 8, message = "must be 8 or greater")
     @NotNull(message = "must not be null")
     private Integer grade;
 
+    @NotEmpty(message = "must not be empty")
     @Email(message = "incorrect format")
     private String email;
 
