@@ -2,6 +2,7 @@ package net.edt.web.service;
 
 import net.edt.web.domain.SignInRequest;
 import net.edt.web.domain.User;
+import net.edt.web.exception.EntityAlreadyExistsException;
 import net.edt.web.exception.EntityNotFoundException;
 import net.edt.web.repository.SignInRequestRepository;
 import net.edt.web.repository.UserRepository;
@@ -33,6 +34,10 @@ public class UserService {
 
     public User create(User user) {
         replaceSignInRequests(user.getSignInRequests());
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new EntityAlreadyExistsException("email already in use");
+        }
+
         return userRepository.save(user);
     }
 

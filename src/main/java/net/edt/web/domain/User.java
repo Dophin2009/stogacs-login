@@ -24,7 +24,7 @@ public class User {
     @Column(name = "grade", nullable = false)
     private Integer grade;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @OneToMany(mappedBy = "user")
