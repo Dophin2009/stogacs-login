@@ -1,21 +1,26 @@
 package net.edt.web.transfer;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.edt.web.validation.constraint.DateTimeFormat;
+import net.edt.web.validation.constraint.DateTimeType;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import static net.edt.web.validation.constraint.PatternConstants.UUID_REGEXPR_CI;
 
 public class SignInRequestDto {
 
     @NotNull(message = "must not be null")
     private String id;
 
+    @Pattern(regexp = UUID_REGEXPR_CI,
+             flags = {Pattern.Flag.CASE_INSENSITIVE})
     @NotNull(message = "must not be null")
-    @JsonIgnoreProperties(value = "meetings")
-    private UserDto user;
+    @JsonProperty(value = "user_id")
+    private String userId;
 
-    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
     @NotNull(message = "must not be null")
     private String time;
 
@@ -23,9 +28,11 @@ public class SignInRequestDto {
     @JsonProperty(value = "device_info")
     private String deviceInfo;
 
+    @Pattern(regexp = UUID_REGEXPR_CI,
+             flags = {Pattern.Flag.CASE_INSENSITIVE})
     @NotNull(message = "must not be null")
-    @JsonIgnoreProperties(value = {"signin_requests"})
-    private SignInSessionDto session;
+    @JsonProperty(value = "session_id")
+    private String sessionId;
 
     public String getId() {
         return id;
@@ -35,12 +42,12 @@ public class SignInRequestDto {
         this.id = id;
     }
 
-    public UserDto getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(UserDto user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getTime() {
@@ -59,12 +66,14 @@ public class SignInRequestDto {
         this.deviceInfo = deviceInfo;
     }
 
-    public SignInSessionDto getSession() {
-        return session;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setSession(SignInSessionDto session) {
-        this.session = session;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
+
+
 
 }

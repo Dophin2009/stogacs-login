@@ -1,10 +1,10 @@
 package net.edt.web.service;
 
 import net.edt.web.domain.Meeting;
-import net.edt.web.domain.User;
+import net.edt.web.domain.SignInSession;
 import net.edt.web.exception.EntityNotFoundException;
 import net.edt.web.repository.MeetingRepository;
-import net.edt.web.repository.UserRepository;
+import net.edt.web.repository.SignInSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class MeetingService {
     private MeetingRepository meetingRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private SignInSessionRepository signInSessionRepository;
 
     public List<Meeting> getAll() {
         return meetingRepository.findAll();
@@ -35,26 +35,24 @@ public class MeetingService {
     }
 
     public Meeting create(Meeting meeting) {
-        updateUsers(meeting);
+        replaceSignInSessions(meeting.getSignInSessions());
         return meetingRepository.save(meeting);
     }
 
-    private void updateUsers(Meeting meeting) {
-        Set<User> users = meeting.getUsers();
-
-        Set<User> replace = new HashSet<>();
-        for (User user : users) {
-            if (user.getId() != null) {
-                Optional<User> foundUser = userRepository.findById(user.getId());
-                if (foundUser.isPresent()) {
-                    users.remove(user);
-                    replace.add(foundUser.get());
-                } else {
-                    throw new EntityNotFoundException("User with id '" + user.getId() + "' not found");
+    private void replaceSignInSessions(Set<SignInSession> sessions) {
+        Set<SignInSession> replacements = new HashSet<>();
+        for (SignInSession session : sessions) {
+            if (session.getId() != null) {
+                Optional<SignInSession> foundMeeting = signInSessionRepository.findById(session.getId());
+                if (!foundMeeting.isPresent()) {
+                    throw new EntityNotFoundException("SignInRequest with id '" + session.getId() + "' not found");
                 }
+
+                replacements.add(foundMeeting.get());
             }
+            sessions.remove(session);
         }
-        meeting.setUsers(replace);
+        sessions.addAll(replacements);
     }
 
     private EntityNotFoundException createMeetingNotFoundException(Long id) {

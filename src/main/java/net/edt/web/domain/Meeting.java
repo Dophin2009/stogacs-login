@@ -1,6 +1,5 @@
 package net.edt.web.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,26 +21,8 @@ public class Meeting {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @ManyToMany(mappedBy = "meetings")
-    private Set<User> users = new HashSet<>();
-
-    public void addUser(User user) {
-        if (users.contains(user)) {
-            return;
-        }
-
-        users.add(user);
-        user.addMeeting(this);
-    }
-
-    public void removeUser(User user) {
-        if (!users.contains(user)) {
-            return;
-        }
-
-        users.remove(user);
-        user.removeMeeting(this);
-    }
+    @OneToMany(mappedBy = "meeting")
+    private Set<SignInSession> signInSessions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -59,13 +40,12 @@ public class Meeting {
         this.date = date;
     }
 
-    @JsonIgnoreProperties(value = "meetings")
-    public Set<User> getUsers() {
-        return users;
+    public Set<SignInSession> getSignInSessions() {
+        return signInSessions;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setSignInSessions(Set<SignInSession> signInSessions) {
+        this.signInSessions = signInSessions;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package net.edt.web.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -22,29 +21,8 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_meeting",
-               joinColumns = @JoinColumn(name = "user_id"),
-               inverseJoinColumns = @JoinColumn(name = "meeting_id"))
-    private Set<Meeting> meetings = new HashSet<>();
-
-    public void addMeeting(Meeting meeting) {
-        if (meetings.contains(meeting)) {
-            return;
-        }
-
-        this.meetings.add(meeting);
-        meeting.addUser(this);
-    }
-
-    public void removeMeeting(Meeting meeting) {
-        if (!meetings.contains(meeting)) {
-            return;
-        }
-
-        this.meetings.remove(meeting);
-        meeting.removeUser(this);
-    }
+    @OneToMany(mappedBy = "user")
+    private Set<SignInRequest> signInRequests = new HashSet<>();
 
     public UUID getId() {
         return id;
@@ -62,13 +40,12 @@ public class User {
         this.name = name;
     }
 
-    @JsonIgnoreProperties(value = "users")
-    public Set<Meeting> getMeetings() {
-        return meetings;
+    public Set<SignInRequest> getSignInRequests() {
+        return signInRequests;
     }
 
-    public void setMeetings(Set<Meeting> meetings) {
-        this.meetings = meetings;
+    public void setSignInRequests(Set<SignInRequest> signInRequests) {
+        this.signInRequests = signInRequests;
     }
 
     @Override

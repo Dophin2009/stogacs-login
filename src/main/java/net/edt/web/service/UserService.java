@@ -1,9 +1,9 @@
 package net.edt.web.service;
 
-import net.edt.web.domain.Meeting;
+import net.edt.web.domain.SignInRequest;
 import net.edt.web.domain.User;
 import net.edt.web.exception.EntityNotFoundException;
-import net.edt.web.repository.MeetingRepository;
+import net.edt.web.repository.SignInRequestRepository;
 import net.edt.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private MeetingRepository meetingRepository;
+    private SignInRequestRepository signInRequestRepository;
 
     public List<User> getAll() {
         return userRepository.findAll();
@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public User create(User user) {
-        updateMeetings(user);
+        replaceSignInRequests(user.getSignInRequests());
         return userRepository.save(user);
     }
 
@@ -43,7 +43,7 @@ public class UserService {
         }
 
         user.setId(id);
-        updateMeetings(user);
+        replaceSignInRequests(user.getSignInRequests());
         return userRepository.save(user);
     }
 
@@ -56,22 +56,20 @@ public class UserService {
         return found.get();
     }
 
-    private void updateMeetings(User user) {
-        Set<Meeting> meetings = user.getMeetings();
-
-        Set<Meeting> replace = new HashSet<>();
-        for (Meeting meeting : meetings) {
-            if (meeting.getId() != null) {
-                Optional<Meeting> foundMeeting = meetingRepository.findById(meeting.getId());
-                if (!foundMeeting.isPresent()) {
-                    throw new EntityNotFoundException("Meeting with id '" + meeting.getId() + "' not found");
+    private void replaceSignInRequests(Set<SignInRequest> requests) {
+        Set<SignInRequest> replacements = new HashSet<>();
+        for (SignInRequest req : requests) {
+            if (req.getId() != null) {
+                Optional<SignInRequest> foundRequest = signInRequestRepository.findById(req.getId());
+                if (!foundRequest.isPresent()) {
+                    throw new EntityNotFoundException("SignInRequest with id '" + req.getId() + "' not found");
                 }
 
-                meetings.remove(meeting);
-                replace.add(foundMeeting.get());
+                replacements.add(foundRequest.get());
             }
+            requests.remove(req);
         }
-        user.setMeetings(replace);
+        requests.addAll(replacements);
     }
 
     private EntityNotFoundException createUserNotFoundException(UUID id) {

@@ -1,32 +1,37 @@
 package net.edt.web.transfer;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.edt.web.validation.constraint.DateTimeFormat;
+import net.edt.web.validation.constraint.DateTimeType;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
+
+import static net.edt.web.validation.constraint.PatternConstants.UUID_REGEXPR_CI;
 
 public class SignInSessionDto {
 
     @NotNull(message = "must not be null")
     private String id;
 
-    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
     @JsonProperty(value = "start_time")
     private String startTime;
 
-    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
     @JsonProperty(value = "end_time")
     private String endTime;
 
-    @JsonIgnoreProperties(value = {"users"})
     @NotNull(message = "must not be null")
-    private MeetingDto meeting;
+    @JsonProperty(value = "meeting_id")
+    private Long meetingId;
 
     @JsonProperty(value = "signin_requests")
-    private Set<SignInRequestDto> signInRequests = new HashSet<>();
+    private Set<@Pattern(regexp = UUID_REGEXPR_CI,
+                         flags = {Pattern.Flag.CASE_INSENSITIVE}) String>
+            signInRequestIds = new HashSet<>();
 
     public String getId() {
         return id;
@@ -52,20 +57,20 @@ public class SignInSessionDto {
         this.endTime = endTime;
     }
 
-    public MeetingDto getMeeting() {
-        return meeting;
+    public Long getMeetingId() {
+        return meetingId;
     }
 
-    public void setMeeting(MeetingDto meeting) {
-        this.meeting = meeting;
+    public void setMeetingId(Long meetingId) {
+        this.meetingId = meetingId;
     }
 
-    public Set<SignInRequestDto> getSignInRequests() {
-        return signInRequests;
+    public Set<String> getSignInRequestIds() {
+        return signInRequestIds;
     }
 
-    public void setSignInRequests(Set<SignInRequestDto> signInRequests) {
-        this.signInRequests = signInRequests;
+    public void setSignInRequestIds(Set<String> signInRequestIds) {
+        this.signInRequestIds = signInRequestIds;
     }
 
 }

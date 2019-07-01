@@ -1,10 +1,13 @@
 package net.edt.web.transfer;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
+
+import static net.edt.web.validation.constraint.PatternConstants.UUID_REGEXPR_CI;
 
 public class UserDto {
 
@@ -14,8 +17,10 @@ public class UserDto {
     @NotNull(message = "must not be null")
     private String name;
 
-    @JsonIgnoreProperties({"users"})
-    private Set<MeetingDto> meetings = new HashSet<>();
+    @JsonProperty(value = "signin_request_ids")
+    private Set<@Pattern(regexp = UUID_REGEXPR_CI,
+                         flags = {Pattern.Flag.CASE_INSENSITIVE}) String>
+            signInRequestIds = new HashSet<>();
 
     public String getId() {
         return id;
@@ -33,12 +38,12 @@ public class UserDto {
         this.name = name;
     }
 
-    public Set<MeetingDto> getMeetings() {
-        return meetings;
+    public Set<String> getSignInRequestIds() {
+        return signInRequestIds;
     }
 
-    public void setMeetings(Set<MeetingDto> meetings) {
-        this.meetings = meetings;
+    public void setSignInRequestIds(Set<String> signInRequestIds) {
+        this.signInRequestIds = signInRequestIds;
     }
 
 }

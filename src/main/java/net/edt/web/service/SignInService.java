@@ -12,9 +12,7 @@ import net.edt.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class SignInService {
@@ -38,34 +36,60 @@ public class SignInService {
     public List<SignInRequest> getAllRequests() {
         return signInRequestRepository.findAll();
     }
+    
+    public SignInSession create(SignInSession session) {
+        replaceMeeting(session);
+        replaceSignInRequests(session.getSignInRequests());
+        return signInSessionRepository.save(session);
+    }
 
     public SignInRequest create(SignInRequest request) {
-        UUID userId = request.getUser().getId();
-        Optional<User> foundUser = userRepository.findById(userId);
-        if (!foundUser.isPresent()) {
-            throw new EntityNotFoundException("User with id '" + userId + "' not found");
-        }
-
-        UUID sessionID = request.getSession().getId();
-        Optional<SignInSession> foundSession = signInSessionRepository.findById(sessionID);
-        if (!foundSession.isPresent()) {
-            throw new EntityNotFoundException("Session with id '" + sessionID + "' not found");
-        }
-
-        request.setUser(foundUser.get());
-        request.setSession(foundSession.get());
+        replaceUser(request);
+        replaceSession(request);
         return signInRequestRepository.save(request);
     }
 
-    public SignInSession create(SignInSession session) {
+    private void replaceMeeting(SignInSession session) {
         Long meetingId = session.getMeeting().getId();
         Optional<Meeting> foundMeeting = meetingRepository.findById(meetingId);
         if (!foundMeeting.isPresent()) {
             throw new EntityNotFoundException("Meeting with id '" + meetingId + "' not found");
         }
-
         session.setMeeting(foundMeeting.get());
-        return signInSessionRepository.save(session);
+    }
+
+    private void replaceSignInRequests(Set<SignInRequest> requests) {
+        Set<SignInRequest> replacements = new HashSet<>();
+        for (SignInRequest req : requests) {
+            if (req.getId() != null) {
+                Optional<SignInRequest> foundRequest = signInRequestRepository.findById(req.getId());
+                if (!foundRequest.isPresent()) {
+                    throw new EntityNotFoundException("SignInRequest with id '" + req.getId() + "' not found");
+                }
+
+                replacements.add(foundRequest.get());
+            }
+            requests.remove(req);
+        }
+        requests.addAll(replacements);
+    }
+
+    private void replaceUser(SignInRequest request) {
+        UUID userId = request.getUser().getId();
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (!foundUser.isPresent()) {
+            throw new EntityNotFoundException("User with id '" + userId + "' not found");
+        }
+        request.setUser(foundUser.get());
+    }
+
+    private void replaceSession(SignInRequest request) {
+        UUID sessionID = request.getSession().getId();
+        Optional<SignInSession> foundSession = signInSessionRepository.findById(sessionID);
+        if (!foundSession.isPresent()) {
+            throw new EntityNotFoundException("Session with id '" + sessionID + "' not found");
+        }
+        request.setSession(foundSession.get());
     }
 
 }
