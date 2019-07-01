@@ -1,8 +1,8 @@
 package net.edt.web.converter;
 
-import net.edt.web.domain.Meeting;
-import net.edt.web.domain.SignInSession;
-import net.edt.web.transfer.MeetingDto;
+import net.edt.persistence.domain.Meeting;
+import net.edt.persistence.domain.SignInSession;
+import net.edt.web.dto.MeetingDto;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;

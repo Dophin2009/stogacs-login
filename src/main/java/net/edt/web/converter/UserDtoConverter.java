@@ -1,8 +1,8 @@
 package net.edt.web.converter;
 
-import net.edt.web.domain.SignInRequest;
-import net.edt.web.domain.User;
-import net.edt.web.transfer.UserDto;
+import net.edt.persistence.domain.SignInRequest;
+import net.edt.persistence.domain.User;
+import net.edt.web.dto.UserDto;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;

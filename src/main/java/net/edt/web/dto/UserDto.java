@@ -1,4 +1,4 @@
-package net.edt.web.transfer;
+package net.edt.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

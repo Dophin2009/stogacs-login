@@ -2,10 +2,10 @@ package net.edt.web.controller;
 
 import net.edt.web.converter.RegistrationToUserConverter;
 import net.edt.web.converter.UserDtoConverter;
-import net.edt.web.domain.User;
+import net.edt.persistence.domain.User;
 import net.edt.web.service.UserService;
-import net.edt.web.transfer.RegistrationContext;
-import net.edt.web.transfer.UserDto;
+import net.edt.web.dto.RegistrationContext;
+import net.edt.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

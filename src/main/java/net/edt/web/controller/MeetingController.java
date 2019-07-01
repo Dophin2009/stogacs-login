@@ -1,10 +1,10 @@
 package net.edt.web.controller;
 
 import net.edt.web.converter.MeetingDtoConverter;
-import net.edt.web.domain.Meeting;
+import net.edt.persistence.domain.Meeting;
 import net.edt.web.exception.InvalidFormatException;
 import net.edt.web.service.MeetingService;
-import net.edt.web.transfer.MeetingDto;
+import net.edt.web.dto.MeetingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,6 @@
 package net.edt.web.controller;
 
-import net.edt.web.domain.Meeting;
+import net.edt.persistence.domain.Meeting;
 import net.edt.web.service.QRService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

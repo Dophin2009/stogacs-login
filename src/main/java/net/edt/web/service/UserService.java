@@ -1,12 +1,12 @@
 package net.edt.web.service;
 
-import net.edt.web.domain.Role;
-import net.edt.web.domain.SignInRequest;
-import net.edt.web.domain.User;
+import net.edt.persistence.domain.Role;
+import net.edt.persistence.domain.SignInRequest;
+import net.edt.persistence.domain.User;
 import net.edt.web.exception.EntityAlreadyExistsException;
 import net.edt.web.exception.EntityNotFoundException;
-import net.edt.web.repository.SignInRequestRepository;
-import net.edt.web.repository.UserRepository;
+import net.edt.persistence.repository.SignInRequestRepository;
+import net.edt.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

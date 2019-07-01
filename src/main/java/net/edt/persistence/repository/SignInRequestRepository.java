@@ -1,6 +1,6 @@
-package net.edt.web.repository;
+package net.edt.persistence.repository;
 
-import net.edt.web.domain.SignInRequest;
+import net.edt.persistence.domain.SignInRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

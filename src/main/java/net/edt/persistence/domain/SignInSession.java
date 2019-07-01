@@ -1,4 +1,4 @@
-package net.edt.web.domain;
+package net.edt.persistence.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 

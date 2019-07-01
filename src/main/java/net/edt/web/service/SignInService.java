@@ -1,14 +1,14 @@
 package net.edt.web.service;
 
-import net.edt.web.domain.Meeting;
-import net.edt.web.domain.SignInRequest;
-import net.edt.web.domain.SignInSession;
-import net.edt.web.domain.User;
+import net.edt.persistence.domain.Meeting;
+import net.edt.persistence.domain.SignInRequest;
+import net.edt.persistence.domain.SignInSession;
+import net.edt.persistence.domain.User;
 import net.edt.web.exception.EntityNotFoundException;
-import net.edt.web.repository.MeetingRepository;
-import net.edt.web.repository.SignInRequestRepository;
-import net.edt.web.repository.SignInSessionRepository;
-import net.edt.web.repository.UserRepository;
+import net.edt.persistence.repository.MeetingRepository;
+import net.edt.persistence.repository.SignInRequestRepository;
+import net.edt.persistence.repository.SignInSessionRepository;
+import net.edt.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

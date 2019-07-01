@@ -1,6 +1,6 @@
-package net.edt.web.repository;
+package net.edt.persistence.repository;
 
-import net.edt.web.domain.User;
+import net.edt.persistence.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

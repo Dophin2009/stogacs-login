@@ -1,6 +1,6 @@
 package net.edt.web.exception;
 
-import net.edt.web.transfer.ServiceError;
+import net.edt.web.dto.ServiceError;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
