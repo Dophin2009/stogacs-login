@@ -1,5 +1,7 @@
 package net.edt.security;
 
+import net.edt.web.domain.Role;
+import net.edt.web.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +9,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -16,8 +17,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private static final String ROLE_ADMIN = "ADMIN";
-    private static final String ROLE_USER = "USER";
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private CustomAccessDeniedHandler accessDeniedHandler;
@@ -26,21 +27,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Autowired
-    private SavedRequestAwareAuthenticationSuccessHandler mySuccessHandler;
+    private SavedRequestAwareAuthenticationSuccessHandler successHandler;
 
-    private SimpleUrlAuthenticationFailureHandler myFailureHandler = new SimpleUrlAuthenticationFailureHandler();
-
-    public SecurityConfiguration() {
-        super();
-        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
-    }
+    private SimpleUrlAuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password(encoder().encode("admin")).roles(ROLE_USER, ROLE_ADMIN)
-                .and()
-                .withUser("user").password(encoder().encode("user")).roles(ROLE_USER);
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
@@ -51,11 +44,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(restAuthenticationEntryPoint);
         http.authorizeRequests()
+                .antMatchers("/user/register").permitAll()
                 .antMatchers("/user/**").authenticated()
-                .antMatchers("/admin/**").hasRole(ROLE_ADMIN);
+                .antMatchers("/admin/**").hasRole(Role.ROLE_ADMIN.getValue());
         http.formLogin()
-                .successHandler(mySuccessHandler)
-                .failureHandler(myFailureHandler);
+                .successHandler(successHandler)
+                .failureHandler(failureHandler);
         http.httpBasic();
         http.logout();
     }

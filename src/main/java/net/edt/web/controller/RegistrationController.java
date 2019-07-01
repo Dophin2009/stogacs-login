@@ -25,7 +25,7 @@ public class RegistrationController {
     @Autowired
     private RegistrationToUserConverter registrationToUserConverter;
 
-    @PostMapping("/users/register")
+    @PostMapping("/user/register")
     public UserDto registerUser(@Valid @RequestBody RegistrationContext context) {
         User converted = registrationToUserConverter.convertToUser(context);
         User newUser = userService.create(converted);

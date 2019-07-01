@@ -24,8 +24,14 @@ public class User {
     @Column(name = "grade", nullable = false)
     private Integer grade;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     private Set<SignInRequest> signInRequests = new HashSet<>();
@@ -60,6 +66,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Set<SignInRequest> getSignInRequests() {

@@ -1,5 +1,6 @@
 package net.edt.web.service;
 
+import net.edt.web.domain.Role;
 import net.edt.web.domain.SignInRequest;
 import net.edt.web.domain.User;
 import net.edt.web.exception.EntityAlreadyExistsException;
@@ -38,6 +39,7 @@ public class UserService {
             throw new EntityAlreadyExistsException("email already in use");
         }
 
+        user.getRoles().add(Role.ROLE_USER);
         return userRepository.save(user);
     }
 
