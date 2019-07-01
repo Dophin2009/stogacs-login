@@ -34,6 +34,8 @@ public class SignInRequestDto {
     @JsonProperty(value = "session_id")
     private String sessionId;
 
+    private boolean success;
+
     public String getId() {
         return id;
     }
@@ -74,6 +76,12 @@ public class SignInRequestDto {
         this.sessionId = sessionId;
     }
 
+    public boolean isSuccess() {
+        return success;
+    }
 
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
 }

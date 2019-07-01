@@ -29,6 +29,9 @@ public class SignInRequest {
     @JoinColumn(name = "session_id")
     private SignInSession session;
 
+    @Column(name = "success")
+    private boolean success;
+
     public UUID getId() {
         return id;
     }
@@ -67,6 +70,14 @@ public class SignInRequest {
 
     public void setSession(SignInSession session) {
         this.session = session;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
 }

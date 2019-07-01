@@ -12,6 +12,7 @@ import net.edt.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -46,6 +47,13 @@ public class SignInService {
     public SignInRequest create(SignInRequest request) {
         replaceUser(request);
         replaceSession(request);
+        request.setTime(LocalDateTime.now());
+
+        LocalDateTime requestTime = request.getTime();
+        SignInSession session = request.getSession();
+        boolean requestSuccess = requestTime.isAfter(session.getStartTime()) && requestTime.isBefore(session.getEndTime());
+        request.setSuccess(requestSuccess);
+
         return signInRequestRepository.save(request);
     }
 
