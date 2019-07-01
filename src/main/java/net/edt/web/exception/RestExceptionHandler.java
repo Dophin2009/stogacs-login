@@ -37,6 +37,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(errorResponse);
     }
 
+    @ExceptionHandler(EntityAlreadyExistsException.class)
+    protected ResponseEntity<Object> handleEntityAlreadyExists(EntityAlreadyExistsException ex) {
+        ServiceError errorResponse = new ServiceError(HttpStatus.NOT_FOUND, "Entity already exists", ex);
+        return buildResponseEntity(errorResponse);
+    }
+
     @ExceptionHandler(InvalidFormatException.class)
     protected ResponseEntity<Object> handleInvalidFormat(InvalidFormatException ex) {
         ServiceError errorResponse = new ServiceError(HttpStatus.BAD_REQUEST, "Invalid format in request", ex);
