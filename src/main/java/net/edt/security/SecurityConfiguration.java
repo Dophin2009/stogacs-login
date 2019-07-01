@@ -1,4 +1,4 @@
-package net.edt.configuration.security;
+package net.edt.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
