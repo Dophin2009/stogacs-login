@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,7 +24,7 @@ public class MeetingDtoConverter implements DtoConverter<Meeting, MeetingDto> {
         TypeMap<Meeting, MeetingDto> toDtoMap = modelMapper.createTypeMap(Meeting.class, MeetingDto.class);
         Converter<Set<SignInSession>, Set<String>> sessionToId = ctx -> {
             Set<SignInSession> requests = ctx.getSource();
-            return requests.stream().map(req -> req.getId().toString()).collect(Collectors.toSet());
+            return requests.stream().map(SignInSession::getId).collect(Collectors.toSet());
         };
         toDtoMap.addMappings(
                 mapper -> mapper.using(sessionToId).map(Meeting::getSignInSessions, MeetingDto::setSignInSessionIds));
@@ -35,7 +34,7 @@ public class MeetingDtoConverter implements DtoConverter<Meeting, MeetingDto> {
             Set<String> ids = ctx.getSource();
             return ids.stream().map(id -> {
                 SignInSession session = new SignInSession();
-                session.setId(UUID.fromString(id));
+                session.setId(id);
                 return session;
             }).collect(Collectors.toSet());
         };

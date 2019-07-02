@@ -92,7 +92,7 @@ public class SignInService {
     }
 
     private void replaceSession(SignInRequest request) {
-        UUID sessionID = request.getSession().getId();
+        String sessionID = request.getSession().getId();
         Optional<SignInSession> foundSession = signInSessionRepository.findById(sessionID);
         if (!foundSession.isPresent()) {
             throw new EntityNotFoundException("Session with id '" + sessionID + "' not found");

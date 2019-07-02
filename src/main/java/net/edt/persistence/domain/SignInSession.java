@@ -1,21 +1,26 @@
 package net.edt.persistence.domain;
 
+import net.edt.persistence.generator.AlphanumericGenerator;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 public class SignInSession {
 
+    private static final int ID_LENGTH = 35;
+
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", length = 16, updatable = false, nullable = false)
-    private UUID id;
+    @GeneratedValue(generator = "alphanumeric")
+    @GenericGenerator(name = "alphanumeric", strategy = "net.edt.persistence.generator.AlphanumericGenerator",
+                      parameters = {@Parameter(name = "length", value = "" + ID_LENGTH),
+                                    @Parameter(name = "symbols", value = AlphanumericGenerator.ALPHANUM)})
+    @Column(name = "id", length = ID_LENGTH, updatable = false, nullable = false)
+    private String id;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -38,11 +43,11 @@ public class SignInSession {
         this.endTime = endTime;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

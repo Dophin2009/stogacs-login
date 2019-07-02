@@ -46,7 +46,7 @@ public class SignInRequestDtoConverter implements DtoConverter<SignInRequest, Si
         };
         Converter<String, SignInSession> idToSession = ctx -> {
             SignInSession session = new SignInSession();
-            session.setId(UUID.fromString(ctx.getSource()));
+            session.setId(ctx.getSource());
             return session;
         };
         toEntityMap.addMappings(

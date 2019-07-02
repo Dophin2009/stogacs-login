@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -46,7 +45,7 @@ public class SignInSessionDtoConverter implements DtoConverter<SignInSession, Si
             Set<String> ids = ctx.getSource();
             return ids.stream().map(id -> {
                 SignInRequest request = new SignInRequest();
-                request.setId(UUID.fromString(id));
+                request.setId(id);
                 return request;
             }).collect(Collectors.toSet());
         };
