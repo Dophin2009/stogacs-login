@@ -1,4 +1,4 @@
-package net.edt.security;
+package net.edt.security.configuration;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;

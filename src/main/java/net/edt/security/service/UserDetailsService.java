@@ -1,4 +1,4 @@
-package net.edt.security;
+package net.edt.security.service;
 
 import net.edt.persistence.domain.Role;
 import net.edt.persistence.domain.User;

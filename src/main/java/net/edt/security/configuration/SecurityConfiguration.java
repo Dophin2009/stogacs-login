@@ -1,6 +1,7 @@
-package net.edt.security;
+package net.edt.security.configuration;
 
 import net.edt.persistence.domain.Role;
+import net.edt.security.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

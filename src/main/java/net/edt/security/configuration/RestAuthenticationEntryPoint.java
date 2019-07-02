@@ -1,4 +1,4 @@
-package net.edt.security;
+package net.edt.security.configuration;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
