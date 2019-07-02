@@ -39,7 +39,7 @@ public class UserService {
 
     public User create(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new EntityAlreadyExistsException("email already in use");
+            throw new EntityAlreadyExistsException("Email already in use");
         }
 
         replaceSignInRequests(user.getSignInRequests());
