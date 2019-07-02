@@ -40,14 +40,6 @@ public class UserController {
         }
     }
 
-    @PostMapping
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        userDto.setId(null);
-        User converted = userDtoConverter.convertToEntity(userDto);
-        User newUser = userService.create(converted);
-        return userDtoConverter.convertToDto(newUser);
-    }
-
     @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable(name = "id") String id, @Valid @RequestBody UserDto userDto) {
         if (!id.equals(userDto.getId())) {
