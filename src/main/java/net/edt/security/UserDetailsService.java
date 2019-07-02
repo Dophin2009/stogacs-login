@@ -10,12 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Transactional
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     @Autowired
@@ -29,13 +31,9 @@ public class UserDetailsService implements org.springframework.security.core.use
         }
 
         User user = foundUser.get();
-        boolean enabled = true;
-        boolean accountNotExpired = true;
-        boolean credentialsNotExpired = true;
-        boolean accountNotLocked = true;
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), enabled,
-                                                                      accountNotExpired, credentialsNotExpired,
-                                                                      accountNotLocked,
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true,
+                                                                      true, true,
+                                                                      true,
                                                                       getAuthorities(user.getRoles()));
     }
 

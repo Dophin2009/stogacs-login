@@ -1,11 +1,11 @@
 package net.edt.web.controller;
 
+import net.edt.persistence.domain.User;
 import net.edt.web.converter.RegistrationToUserConverter;
 import net.edt.web.converter.UserDtoConverter;
-import net.edt.persistence.domain.User;
-import net.edt.web.service.UserService;
 import net.edt.web.dto.RegistrationContext;
 import net.edt.web.dto.UserDto;
+import net.edt.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +28,7 @@ public class RegistrationController {
     @PostMapping("/user/register")
     public UserDto registerUser(@Valid @RequestBody RegistrationContext context) {
         User converted = registrationToUserConverter.convertToUser(context);
+
         User newUser = userService.create(converted);
         return userDtoConverter.convertToDto(newUser);
     }

@@ -27,10 +27,11 @@ public class User {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", length = 60, nullable = false)
     private String password;
 
     @ElementCollection(fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")

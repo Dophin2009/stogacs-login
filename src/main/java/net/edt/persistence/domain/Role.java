@@ -2,8 +2,8 @@ package net.edt.persistence.domain;
 
 public enum Role {
 
-    ROLE_ADMIN("ADMIN"),
-    ROLE_USER("USER");
+    ADMIN("ADMIN"),
+    USER("USER");
 
     private String value;
 

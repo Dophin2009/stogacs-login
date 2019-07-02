@@ -8,6 +8,7 @@ import net.edt.web.exception.EntityNotFoundException;
 import net.edt.persistence.repository.SignInRequestRepository;
 import net.edt.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,6 +21,9 @@ public class UserService {
 
     @Autowired
     private SignInRequestRepository signInRequestRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<User> getAll() {
         return userRepository.findAll();
@@ -34,12 +38,14 @@ public class UserService {
     }
 
     public User create(User user) {
-        replaceSignInRequests(user.getSignInRequests());
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new EntityAlreadyExistsException("email already in use");
         }
 
-        user.getRoles().add(Role.ROLE_USER);
+        replaceSignInRequests(user.getSignInRequests());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.getRoles().add(Role.USER);
+
         return userRepository.save(user);
     }
 
