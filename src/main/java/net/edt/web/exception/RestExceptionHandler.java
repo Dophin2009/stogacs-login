@@ -1,6 +1,6 @@
 package net.edt.web.exception;
 
-import net.edt.web.dto.ServiceError;
+import net.edt.web.dto.ErrorMessage;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,29 +27,29 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             debugMessageBuilder.append(error.getObjectName()).append(": ").append(error.getDefaultMessage()).append("; ");
         }
 
-        ServiceError errorResponse = new ServiceError(HttpStatus.BAD_REQUEST, "Invalid request body", debugMessageBuilder.toString());
+        ErrorMessage errorResponse = new ErrorMessage(HttpStatus.BAD_REQUEST, "Invalid request body", debugMessageBuilder.toString());
         return buildResponseEntity(errorResponse);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
-        ServiceError errorResponse = new ServiceError(HttpStatus.NOT_FOUND, "Requested entity not found", ex);
+        ErrorMessage errorResponse = new ErrorMessage(HttpStatus.NOT_FOUND, "Requested entity not found", ex);
         return buildResponseEntity(errorResponse);
     }
 
     @ExceptionHandler(EntityAlreadyExistsException.class)
     protected ResponseEntity<Object> handleEntityAlreadyExists(EntityAlreadyExistsException ex) {
-        ServiceError errorResponse = new ServiceError(HttpStatus.NOT_FOUND, "Entity already exists", ex);
+        ErrorMessage errorResponse = new ErrorMessage(HttpStatus.NOT_FOUND, "Entity already exists", ex);
         return buildResponseEntity(errorResponse);
     }
 
     @ExceptionHandler(InvalidFormatException.class)
     protected ResponseEntity<Object> handleInvalidFormat(InvalidFormatException ex) {
-        ServiceError errorResponse = new ServiceError(HttpStatus.BAD_REQUEST, "Invalid format in request", ex);
+        ErrorMessage errorResponse = new ErrorMessage(HttpStatus.BAD_REQUEST, "Invalid format in request", ex);
         return buildResponseEntity(errorResponse);
     }
 
-    private ResponseEntity<Object> buildResponseEntity(ServiceError error) {
+    private ResponseEntity<Object> buildResponseEntity(ErrorMessage error) {
         return new ResponseEntity<>(error, error.getStatus());
     }
 
