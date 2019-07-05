@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 public class SignInRequest {
 
-    private static final int ID_LENGTH = 35;
+    public static final int ID_LENGTH = 35;
 
     @Id
     @GeneratedValue(generator = "alphanumeric")

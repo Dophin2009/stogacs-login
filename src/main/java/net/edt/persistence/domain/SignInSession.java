@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 public class SignInSession {
 
-    private static final int ID_LENGTH = 35;
+    public static final int ID_LENGTH = 35;
 
     @Id
     @GeneratedValue(generator = "alphanumeric")

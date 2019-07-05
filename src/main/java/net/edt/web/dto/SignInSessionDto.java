@@ -1,18 +1,19 @@
 package net.edt.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.edt.persistence.domain.SignInRequest;
+import net.edt.persistence.domain.SignInSession;
 import net.edt.web.validation.constraint.DateTimeFormat;
 import net.edt.web.validation.constraint.DateTimeType;
+import net.edt.web.validation.constraint.EmptyOrSize;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
 
-import static net.edt.web.validation.constraint.PatternConstants.UUID_REGEXPR_CI;
-
 public class SignInSessionDto {
 
+    @EmptyOrSize(min = SignInSession.ID_LENGTH, max = SignInSession.ID_LENGTH)
     @NotNull(message = "must not be null")
     private String id;
 
@@ -29,8 +30,7 @@ public class SignInSessionDto {
     private Long meetingId;
 
     @JsonProperty(value = "signin_requests")
-    private Set<@Pattern(regexp = UUID_REGEXPR_CI,
-                         flags = {Pattern.Flag.CASE_INSENSITIVE}) String>
+    private Set<@EmptyOrSize(min = SignInRequest.ID_LENGTH, max = SignInRequest.ID_LENGTH) String>
             signInRequestIds = new HashSet<>();
 
     public String getId() {

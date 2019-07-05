@@ -1,12 +1,12 @@
 package net.edt.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.edt.persistence.domain.SignInRequest;
+import net.edt.web.validation.constraint.EmptyOrSize;
 
 import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
-
-import static net.edt.web.validation.constraint.PatternConstants.UUID_REGEXPR_CI;
 
 public class UserDto {
 
@@ -27,8 +27,7 @@ public class UserDto {
     private String email;
 
     @JsonProperty(value = "signin_request_ids")
-    private Set<@Pattern(regexp = UUID_REGEXPR_CI,
-                         flags = {Pattern.Flag.CASE_INSENSITIVE}) String>
+    private Set<@EmptyOrSize(min = SignInRequest.ID_LENGTH, max = SignInRequest.ID_LENGTH) String>
             signInRequestIds = new HashSet<>();
 
     public String getId() {
