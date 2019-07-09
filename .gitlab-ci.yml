@@ -8,9 +8,9 @@ stages:
 maven-build:
   stage: build
   script:
-    - apt-get update -qy
-    - apt-get install -y maven
-    - maven package
+    - sudo apt-get update -qy
+    - sudo apt-get install -y maven
+    - mvn package
   artifacts:
     paths:
       - target/*.jar
@@ -18,15 +18,15 @@ maven-build:
 deploy-staging:
   stage: staging
   script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
+    - sudo apt-get update -qy
+    - sudo apt-get install -y ruby-dev
     - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_STAGING_APP --api-key=$HEROKU_STAGING_API_KEY
 
 deploy-prod:
   stage: production
   script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
+    - sudo apt-get update -qy
+    - sudo apt-get install -y ruby-dev
     - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_PRODUCTION_APP --api-key=$HEROKU_PRODUCTION_API_KEY
