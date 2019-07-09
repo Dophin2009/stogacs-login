@@ -6,27 +6,22 @@ stages:
   - production
 
 maven-build:
+  image: maven:3-jdk-8
   stage: build
   script:
-    - apt-get update -qy
-    - apt-get install -y maven
-    - maven package
+    - mvn package
   artifacts:
     paths:
       - target/*.jar
 
 deploy-staging:
+  image: tmaier/dpl:latest
   stage: staging
   script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_STAGING_APP --api-key=$HEROKU_STAGING_API_KEY
 
 deploy-prod:
+  image: tmaier/dpl:latest
   stage: production
   script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_PRODUCTION_APP --api-key=$HEROKU_PRODUCTION_API_KEY
