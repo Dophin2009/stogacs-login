@@ -6,6 +6,7 @@ stages:
   - production
 
 maven-build:
+  image: maven:3-jdk-8
   stage: build
   script:
     - mvn package
@@ -14,11 +15,13 @@ maven-build:
       - target/*.jar
 
 deploy-staging:
+  image: tmaier/dpl:latest
   stage: staging
   script:
     - dpl --provider=heroku --app=$HEROKU_STAGING_APP --api-key=$HEROKU_STAGING_API_KEY
 
 deploy-prod:
+  image: tmaier/dpl:latest
   stage: production
   script:
     - dpl --provider=heroku --app=$HEROKU_PRODUCTION_APP --api-key=$HEROKU_PRODUCTION_API_KEY
