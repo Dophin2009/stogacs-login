@@ -8,6 +8,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+      hibernate:
+        ddl-auto: create
 
 hibernate:
   show_sql: true
