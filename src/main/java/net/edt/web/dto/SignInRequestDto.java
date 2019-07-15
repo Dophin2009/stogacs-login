@@ -37,6 +37,9 @@ public class SignInRequestDto {
     @JsonProperty(value = "session_id")
     private String sessionId;
 
+    @NotNull(message = "must not be null")
+    private String timecode;
+
     private boolean success;
 
     public String getId() {
@@ -77,6 +80,14 @@ public class SignInRequestDto {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public String getTimecode() {
+        return timecode;
+    }
+
+    public void setTimecode(String timecode) {
+        this.timecode = timecode;
     }
 
     public boolean isSuccess() {

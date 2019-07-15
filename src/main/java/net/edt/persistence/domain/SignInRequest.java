@@ -34,6 +34,9 @@ public class SignInRequest {
     @JoinColumn(name = "session_id")
     private SignInSession session;
 
+    @Column(name = "timecode")
+    private String timecode;
+
     @Column(name = "success")
     private boolean success;
 
@@ -75,6 +78,14 @@ public class SignInRequest {
 
     public void setSession(SignInSession session) {
         this.session = session;
+    }
+
+    public String getTimecode() {
+        return timecode;
+    }
+
+    public void setTimecode(String timecode) {
+        this.timecode = timecode;
     }
 
     public boolean isSuccess() {

@@ -32,6 +32,13 @@ public class SignInSession {
     @JoinColumn(name = "meeting_id", nullable = false)
     private Meeting meeting;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_codes")
+    private Set<SignInSessionCode> sessionCodes = new HashSet<>();
+
+    @Column(name = "code_refresh")
+    private int codeRefresh;
+
     @OneToMany(mappedBy = "session")
     private Set<SignInRequest> signInRequests = new HashSet<>();
 
@@ -73,6 +80,22 @@ public class SignInSession {
 
     public void setMeeting(Meeting meeting) {
         this.meeting = meeting;
+    }
+
+    public Set<SignInSessionCode> getSessionCodes() {
+        return sessionCodes;
+    }
+
+    public void setSessionCodes(Set<SignInSessionCode> sessionCodes) {
+        this.sessionCodes = sessionCodes;
+    }
+
+    public int getCodeRefresh() {
+        return codeRefresh;
+    }
+
+    public void setCodeRefresh(int codeRefresh) {
+        this.codeRefresh = codeRefresh;
     }
 
     public Set<SignInRequest> getSignInRequests() {

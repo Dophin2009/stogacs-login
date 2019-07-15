@@ -17,10 +17,12 @@ public class SignInSessionDto {
     @NotNull(message = "must not be null")
     private String id;
 
+    @NotNull(message = "must not be null")
     @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
     @JsonProperty(value = "start_time")
     private String startTime;
 
+    @NotNull(message = "must not be null")
     @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
     @JsonProperty(value = "end_time")
     private String endTime;
@@ -28,6 +30,12 @@ public class SignInSessionDto {
     @NotNull(message = "must not be null")
     @JsonProperty(value = "meeting_id")
     private Long meetingId;
+
+    @JsonProperty(value = "session_codes")
+    private Set<SignInSessionCodeDto> sessionCodes;
+
+    @JsonProperty(value = "code_refresh")
+    private int codeRefresh = 60;
 
     @JsonProperty(value = "signin_requests")
     private Set<@EmptyOrSize(min = SignInRequest.ID_LENGTH, max = SignInRequest.ID_LENGTH) String>
@@ -63,6 +71,22 @@ public class SignInSessionDto {
 
     public void setMeetingId(Long meetingId) {
         this.meetingId = meetingId;
+    }
+
+    public Set<SignInSessionCodeDto> getSessionCodes() {
+        return sessionCodes;
+    }
+
+    public void setSessionCodes(Set<SignInSessionCodeDto> sessionCodes) {
+        this.sessionCodes = sessionCodes;
+    }
+
+    public int getCodeRefresh() {
+        return codeRefresh;
+    }
+
+    public void setCodeRefresh(int codeRefresh) {
+        this.codeRefresh = codeRefresh;
     }
 
     public Set<String> getSignInRequestIds() {
