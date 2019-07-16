@@ -31,8 +31,24 @@ public class SignInService {
         return signInSessionRepository.findAll();
     }
 
+    public SignInSession getSessionFromId(String id) {
+        Optional<SignInSession> foundSession = signInSessionRepository.findById(id);
+        if (!foundSession.isPresent()) {
+            throw new EntityNotFoundException("SignInSession with id '" + id + "' not found");
+        }
+        return foundSession.get();
+    }
+
     public List<SignInRequest> getAllRequests() {
         return signInRequestRepository.findAll();
+    }
+
+    public SignInRequest getRequestFromId(String id) {
+        Optional<SignInRequest> foundRequest = signInRequestRepository.findById(id);
+        if (!foundRequest.isPresent()) {
+            throw new EntityNotFoundException("SignInRequest with id '" + id + "' not found");
+        }
+        return foundRequest.get();
     }
 
     public SignInSession create(SignInSession session) {

@@ -34,12 +34,24 @@ public class SignInController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/admin/signin/sessions/{id}")
+    public SignInSessionDto retrieveSession(@PathVariable(value = "id") String id) {
+        SignInSession session = signInService.getSessionFromId(id);
+        return signInSessionDtoConverter.convertToDto(session);
+    }
+
     @GetMapping("/admin/signin/requests")
     public List<SignInRequestDto> retrieveAllRequests() {
         List<SignInRequest> requests = signInService.getAllRequests();
         return requests.stream()
                 .map(signInRequestDtoConverter::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/admin/signin/requests/{id}")
+    public SignInRequestDto retrieveRequest(@PathVariable(value = "id") String id) {
+        SignInRequest request = signInService.getRequestFromId(id);
+        return signInRequestDtoConverter.convertToDto(request);
     }
 
     @PostMapping("/admin/signin/sessions")
