@@ -1,4 +1,4 @@
-package net.edt.web.service;
+package net.edt.persistence.service;
 
 import net.edt.persistence.domain.Role;
 import net.edt.persistence.domain.SignInRequest;

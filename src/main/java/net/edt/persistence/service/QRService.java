@@ -1,4 +1,4 @@
-package net.edt.web.service;
+package net.edt.persistence.service;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;

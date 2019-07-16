@@ -1,4 +1,4 @@
-package net.edt.web.service;
+package net.edt.persistence.service;
 
 import net.edt.persistence.domain.*;
 import net.edt.persistence.repository.*;

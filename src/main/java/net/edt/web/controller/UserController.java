@@ -3,7 +3,7 @@ package net.edt.web.controller;
 import net.edt.web.converter.UserDtoConverter;
 import net.edt.persistence.domain.User;
 import net.edt.web.exception.InvalidFormatException;
-import net.edt.web.service.UserService;
+import net.edt.persistence.service.UserService;
 import net.edt.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class UserController {
     public List<UserDto> retrieveAllUsers() {
         List<User> users = userService.getAll();
         return users.stream().map(userDtoConverter::convertToDto)
-                .collect(Collectors.toList());
+                    .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")

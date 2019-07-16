@@ -5,7 +5,7 @@ import net.edt.persistence.domain.SignInSessionCode;
 import net.edt.persistence.repository.SignInSessionRepository;
 import net.edt.web.exception.EntityNotFoundException;
 import net.edt.web.exception.InvalidFormatException;
-import net.edt.web.service.QRService;
+import net.edt.persistence.service.QRService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

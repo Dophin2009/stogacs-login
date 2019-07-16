@@ -4,7 +4,7 @@ import net.edt.web.converter.SignInRequestDtoConverter;
 import net.edt.web.converter.SignInSessionDtoConverter;
 import net.edt.persistence.domain.SignInRequest;
 import net.edt.persistence.domain.SignInSession;
-import net.edt.web.service.SignInService;
+import net.edt.persistence.service.SignInService;
 import net.edt.web.dto.SignInRequestDto;
 import net.edt.web.dto.SignInSessionDto;
 import org.springframework.beans.factory.annotation.Autowired;

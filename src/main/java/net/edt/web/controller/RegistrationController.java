@@ -5,7 +5,7 @@ import net.edt.web.converter.RegistrationToUserConverter;
 import net.edt.web.converter.UserDtoConverter;
 import net.edt.web.dto.RegistrationContext;
 import net.edt.web.dto.UserDto;
-import net.edt.web.service.UserService;
+import net.edt.persistence.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
