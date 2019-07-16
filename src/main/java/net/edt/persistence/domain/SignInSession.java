@@ -39,6 +39,9 @@ public class SignInSession {
     @Column(name = "code_refresh")
     private int codeRefresh;
 
+    @Column(name = "code_refresh_offset")
+    private int codeRefreshOffset;
+
     @OneToMany(mappedBy = "session")
     private Set<SignInRequest> signInRequests = new HashSet<>();
 
@@ -96,6 +99,14 @@ public class SignInSession {
 
     public void setCodeRefresh(int codeRefresh) {
         this.codeRefresh = codeRefresh;
+    }
+
+    public int getCodeRefreshOffset() {
+        return codeRefreshOffset;
+    }
+
+    public void setCodeRefreshOffset(int codeRefreshOffset) {
+        this.codeRefreshOffset = codeRefreshOffset;
     }
 
     public Set<SignInRequest> getSignInRequests() {

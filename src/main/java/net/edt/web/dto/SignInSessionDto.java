@@ -37,6 +37,9 @@ public class SignInSessionDto {
     @JsonProperty(value = "code_refresh")
     private int codeRefresh = 60;
 
+    @JsonProperty(value = "refresh_offset")
+    private int codeRefreshOffset = 5;
+
     @JsonProperty(value = "signin_requests")
     private Set<@EmptyOrSize(min = SignInRequest.ID_LENGTH, max = SignInRequest.ID_LENGTH) String>
             signInRequestIds = new HashSet<>();
@@ -87,6 +90,14 @@ public class SignInSessionDto {
 
     public void setCodeRefresh(int codeRefresh) {
         this.codeRefresh = codeRefresh;
+    }
+
+    public int getCodeRefreshOffset() {
+        return codeRefreshOffset;
+    }
+
+    public void setCodeRefreshOffset(int codeRefreshOffset) {
+        this.codeRefreshOffset = codeRefreshOffset;
     }
 
     public Set<String> getSignInRequestIds() {

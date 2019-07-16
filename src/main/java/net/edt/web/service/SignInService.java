@@ -40,8 +40,16 @@ public class SignInService {
         replaceSignInRequests(session.getSignInRequests());
 
         // if no session codes are provided, generate them
-        if (session.getSessionCodes() == null || session.getSessionCodes().isEmpty()) {
+        int codeRefresh = session.getCodeRefresh();
+        if ((session.getSessionCodes() == null || session.getSessionCodes().isEmpty()) && codeRefresh > 0) {
             Set<SignInSessionCode> codes = generateSessionCodes(session);
+            session.setSessionCodes(codes);
+        } else if (codeRefresh == 0) {
+            LocalDateTime codeEndTime = session.getEndTime().plusSeconds(session.getCodeRefreshOffset());
+            SignInSessionCode singleCode = new SignInSessionCode(session.getStartTime(), codeEndTime);
+            Set<SignInSessionCode> codes = new HashSet<>();
+            codes.add(singleCode);
+
             session.setSessionCodes(codes);
         }
 
@@ -82,7 +90,8 @@ public class SignInService {
         Set<SignInSessionCode> codes = new HashSet<>();
         for (LocalDateTime time = session.getStartTime(); time.isBefore(endTime);
              time = time.plusSeconds(refreshRate)) {
-            SignInSessionCode newCode = new SignInSessionCode(time, time.plusSeconds(refreshRate + 5));
+            SignInSessionCode newCode = new SignInSessionCode(time, time.plusSeconds(
+                    refreshRate + session.getCodeRefreshOffset()));
             codes.add(newCode);
         }
         return codes;
