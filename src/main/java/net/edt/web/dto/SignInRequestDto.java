@@ -2,7 +2,6 @@ package net.edt.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.edt.persistence.domain.SignInRequest;
-import net.edt.persistence.domain.SignInSession;
 import net.edt.web.validation.constraint.DateTimeFormat;
 import net.edt.web.validation.constraint.DateTimeType;
 import net.edt.web.validation.constraint.EmptyOrSize;
@@ -32,7 +31,6 @@ public class SignInRequestDto {
     @JsonProperty(value = "device_info")
     private String deviceInfo;
 
-    @EmptyOrSize(min = SignInSession.ID_LENGTH, max = SignInSession.ID_LENGTH)
     @NotNull(message = "must not be null")
     @JsonProperty(value = "session_id")
     private String sessionId;
