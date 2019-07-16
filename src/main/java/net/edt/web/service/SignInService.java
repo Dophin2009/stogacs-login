@@ -71,7 +71,7 @@ public class SignInService {
             String timecode = request.getTimecode();
             Optional<SignInSessionCode> foundSessionCode = signInSessionCodeRepository.findById(timecode);
             if (!foundSessionCode.isPresent()) {
-                throw new EntityNotFoundException("Time code " + timecode + " not found");
+                throw new EntityNotFoundException("Time code '" + timecode + "' not found");
             }
             SignInSessionCode sessionCode = foundSessionCode.get();
             requestSuccess = requestTime.isAfter(sessionCode.getStartTime()) && requestTime
