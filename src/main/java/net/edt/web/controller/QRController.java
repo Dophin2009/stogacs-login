@@ -25,14 +25,19 @@ public class QRController {
     @Autowired
     private SignInSessionRepository signInSessionRepository;
 
-    @GetMapping(value = "/{session_id}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> produceQRCode(@PathVariable(value = "session_id") String sessionId) {
+    @GetMapping(value = "/{sessionId}:{timecode}", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> produceQRCode(@PathVariable String sessionId, @PathVariable String timecode) {
         Optional<SignInSession> foundSession = signInSessionRepository.findById(sessionId);
         if (!foundSession.isPresent()) {
             throw new EntityNotFoundException("SignInSession with id '" + sessionId + "' not found");
         }
 
-        byte[] qr = qrService.generateQRCode(sessionId);
+        SignInSession session = foundSession.get();
+        if (session.getSessionCodes().stream().noneMatch(s -> s.getCode().equals(timecode))) {
+            throw new EntityNotFoundException("Invalid timecode '" + timecode + "'");
+        }
+
+        byte[] qr = qrService.generateQRCode(sessionId + ":" + timecode);
         return new ResponseEntity<>(qr, HttpStatus.OK);
     }
 
