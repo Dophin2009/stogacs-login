@@ -8,9 +8,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: create.sql
     generate-ddl: true
-      hibernate:
-        ddl-auto: create
+    hibernate:
+      ddl-auto: create
 
 hibernate:
   show_sql: true
