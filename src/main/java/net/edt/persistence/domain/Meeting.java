@@ -21,6 +21,9 @@ public class Meeting {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
+    @Column(name = "val", nullable = false)
+    private Integer val;
+
     @OneToMany(mappedBy = "meeting")
     private Set<SignInSession> signInSessions = new HashSet<>();
 
@@ -38,6 +41,14 @@ public class Meeting {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Integer getVal() {
+        return val;
+    }
+
+    public void setVal(Integer val) {
+        this.val = val;
     }
 
     public Set<SignInSession> getSignInSessions() {

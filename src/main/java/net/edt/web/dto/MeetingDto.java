@@ -19,6 +19,9 @@ public class MeetingDto {
     @DateTimeFormat(type = DateTimeType.DATE, format = "yyyy-MM-dd")
     private String date;
 
+    @NotNull(message = "must not be null")
+    private Integer val = 1;
+
     @JsonProperty(value = "signin_session_ids")
     private Set<@EmptyOrSize(min = SignInSession.ID_LENGTH, max = SignInSession.ID_LENGTH) String>
             signInSessionIds = new HashSet<>();
@@ -37,6 +40,14 @@ public class MeetingDto {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Integer getVal() {
+        return val;
+    }
+
+    public void setVal(Integer val) {
+        this.val = val;
     }
 
     public Set<String> getSignInSessionIds() {
