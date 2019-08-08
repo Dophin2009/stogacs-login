@@ -1,4 +1,4 @@
-package net.edt.web.controller;
+package net.edt.web.controller.admin;
 
 import net.edt.web.converter.UserDtoConverter;
 import net.edt.persistence.domain.User;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/users")
-public class UserController {
+public class AdminUserController {
 
     @Autowired
     private UserService userService;

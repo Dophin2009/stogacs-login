@@ -37,6 +37,14 @@ public class UserService {
         return found.get();
     }
 
+    public User getFromEmail(String email) {
+        Optional<User> found = userRepository.findByEmail(email);
+        if (!found.isPresent()) {
+            throw new EntityNotFoundException("User with email '" + email + "' not found");
+        }
+        return found.get();
+    }
+
     public User create(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new EntityAlreadyExistsException("Email already in use");

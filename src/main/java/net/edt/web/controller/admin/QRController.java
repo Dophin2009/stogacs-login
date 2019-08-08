@@ -1,4 +1,4 @@
-package net.edt.web.controller;
+package net.edt.web.controller.admin;
 
 import net.edt.persistence.domain.SignInSession;
 import net.edt.persistence.domain.SignInSessionCode;

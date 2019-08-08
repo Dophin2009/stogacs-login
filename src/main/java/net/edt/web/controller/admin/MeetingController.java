@@ -1,4 +1,4 @@
-package net.edt.web.controller;
+package net.edt.web.controller.admin;
 
 import net.edt.web.converter.MeetingDtoConverter;
 import net.edt.persistence.domain.Meeting;

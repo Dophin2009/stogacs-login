@@ -1,10 +1,10 @@
-package net.edt.web.controller;
+package net.edt.web.controller.admin;
 
-import net.edt.web.converter.SignInRequestDtoConverter;
-import net.edt.web.converter.SignInSessionDtoConverter;
 import net.edt.persistence.domain.SignInRequest;
 import net.edt.persistence.domain.SignInSession;
 import net.edt.persistence.service.SignInService;
+import net.edt.web.converter.SignInRequestDtoConverter;
+import net.edt.web.converter.SignInSessionDtoConverter;
 import net.edt.web.dto.SignInRequestDto;
 import net.edt.web.dto.SignInSessionDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class SignInController {
+@RequestMapping("/admin/signin")
+public class AdminSignInController {
 
     @Autowired
     private SignInService signInService;
@@ -26,48 +27,40 @@ public class SignInController {
     @Autowired
     private SignInRequestDtoConverter signInRequestDtoConverter;
 
-    @GetMapping("/admin/signin/sessions")
+    @GetMapping("/sessions")
     public List<SignInSessionDto> retrieveAllSessions() {
         List<SignInSession> sessions = signInService.getAllSessions();
         return sessions.stream()
-                .map(signInSessionDtoConverter::convertToDto)
-                .collect(Collectors.toList());
+                       .map(signInSessionDtoConverter::convertToDto)
+                       .collect(Collectors.toList());
     }
 
-    @GetMapping("/admin/signin/sessions/{id}")
+    @GetMapping("/sessions/{id}")
     public SignInSessionDto retrieveSession(@PathVariable(value = "id") String id) {
         SignInSession session = signInService.getSessionFromId(id);
         return signInSessionDtoConverter.convertToDto(session);
     }
 
-    @GetMapping("/admin/signin/requests")
+    @GetMapping("/requests")
     public List<SignInRequestDto> retrieveAllRequests() {
         List<SignInRequest> requests = signInService.getAllRequests();
         return requests.stream()
-                .map(signInRequestDtoConverter::convertToDto)
-                .collect(Collectors.toList());
+                       .map(signInRequestDtoConverter::convertToDto)
+                       .collect(Collectors.toList());
     }
 
-    @GetMapping("/admin/signin/requests/{id}")
+    @GetMapping("/requests/{id}")
     public SignInRequestDto retrieveRequest(@PathVariable(value = "id") String id) {
         SignInRequest request = signInService.getRequestFromId(id);
         return signInRequestDtoConverter.convertToDto(request);
     }
 
-    @PostMapping("/admin/signin/sessions")
+    @PostMapping("/sessions")
     public SignInSessionDto createSession(@Valid @RequestBody SignInSessionDto sessionDto) {
         sessionDto.setId(null);
         SignInSession converted = signInSessionDtoConverter.convertToEntity(sessionDto);
         SignInSession session = signInService.create(converted);
         return signInSessionDtoConverter.convertToDto(session);
-    }
-
-    @PutMapping("/user/signin")
-    public SignInRequestDto signIn(@RequestBody SignInRequestDto requestDto) {
-        requestDto.setId(null);
-        SignInRequest converted = signInRequestDtoConverter.convertToEntity(requestDto);
-        SignInRequest request = signInService.create(converted);
-        return signInRequestDtoConverter.convertToDto(request);
     }
 
 }
