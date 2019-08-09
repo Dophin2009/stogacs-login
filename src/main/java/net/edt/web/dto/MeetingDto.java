@@ -1,6 +1,5 @@
 package net.edt.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import net.edt.persistence.domain.SignInSession;
 import net.edt.web.validation.constraint.DateTimeFormat;
 import net.edt.web.validation.constraint.DateTimeType;
@@ -22,7 +21,6 @@ public class MeetingDto {
     @NotNull(message = "must not be null")
     private Integer val = 1;
 
-    @JsonProperty(value = "signin_session_ids")
     private Set<@EmptyOrSize(min = SignInSession.ID_LENGTH, max = SignInSession.ID_LENGTH) String>
             signInSessionIds = new HashSet<>();
 

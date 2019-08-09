@@ -1,6 +1,5 @@
 package net.edt.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import net.edt.web.validation.constraint.MatchingFields;
 
 import javax.validation.constraints.Email;
@@ -29,7 +28,6 @@ public class RegistrationContext {
 
     @NotEmpty(message = "must not be empty")
     @NotNull(message = "must not be null")
-    @JsonProperty("matching_password")
     private String matchingPassword;
 
     public String getName() {

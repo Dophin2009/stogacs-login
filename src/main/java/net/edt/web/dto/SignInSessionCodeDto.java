@@ -1,6 +1,5 @@
 package net.edt.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import net.edt.persistence.domain.SignInSessionCode;
 import net.edt.web.validation.constraint.DateTimeFormat;
 import net.edt.web.validation.constraint.DateTimeType;
@@ -14,11 +13,9 @@ public class SignInSessionCodeDto {
     private String code;
 
     @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
-    @JsonProperty(value = "start_time")
     private LocalDateTime startTime;
 
     @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
-    @JsonProperty(value = "end_time")
     private LocalDateTime endTime;
 
     public String getCode() {

@@ -1,6 +1,5 @@
 package net.edt.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import net.edt.persistence.domain.SignInRequest;
 import net.edt.web.validation.constraint.DateTimeFormat;
 import net.edt.web.validation.constraint.DateTimeType;
@@ -20,7 +19,6 @@ public class SignInRequestDto {
     @Pattern(regexp = UUID_REGEXPR_CI,
              flags = {Pattern.Flag.CASE_INSENSITIVE})
     @NotNull(message = "must not be null")
-    @JsonProperty(value = "user_id")
     private String userId;
 
     @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
@@ -28,11 +26,9 @@ public class SignInRequestDto {
     private String time;
 
     @NotNull(message = "must not be null")
-    @JsonProperty(value = "device_info")
     private String deviceInfo;
 
     @NotNull(message = "must not be null")
-    @JsonProperty(value = "session_id")
     private String sessionId;
 
     @NotNull(message = "must not be null")

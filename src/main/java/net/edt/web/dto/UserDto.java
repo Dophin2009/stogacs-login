@@ -1,10 +1,12 @@
 package net.edt.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import net.edt.persistence.domain.SignInRequest;
 import net.edt.web.validation.constraint.EmptyOrSize;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +28,6 @@ public class UserDto {
     @Email(message = "incorrect format")
     private String email;
 
-    @JsonProperty(value = "signin_request_ids")
     private Set<@EmptyOrSize(min = SignInRequest.ID_LENGTH, max = SignInRequest.ID_LENGTH) String>
             signInRequestIds = new HashSet<>();
 
