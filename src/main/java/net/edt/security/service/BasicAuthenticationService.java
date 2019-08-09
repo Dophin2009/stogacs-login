@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class BasicAuthenticationService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -31,10 +32,11 @@ public class UserDetailsService implements org.springframework.security.core.use
         }
 
         User user = foundUser.get();
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true,
-                                                                      true, true,
-                                                                      true,
-                                                                      getAuthorities(user.getRoles()));
+        String username = user.getEmail();
+        String password = user.getPassword();
+        List<GrantedAuthority> authorities = getAuthorities(user.getRoles());
+        return new org.springframework.security.core.userdetails.User(
+                username, password, true, true, true, true, authorities);
     }
 
     private static List<GrantedAuthority> getAuthorities(Set<Role> roles) {

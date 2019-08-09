@@ -37,6 +37,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<SignInRequest> signInRequests = new HashSet<>();
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private AuthToken authToken;
+
     public UUID getId() {
         return id;
     }
@@ -91,6 +94,14 @@ public class User {
 
     public void setSignInRequests(Set<SignInRequest> signInRequests) {
         this.signInRequests = signInRequests;
+    }
+
+    public AuthToken getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(AuthToken authToken) {
+        this.authToken = authToken;
     }
 
     @Override

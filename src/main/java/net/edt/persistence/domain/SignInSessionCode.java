@@ -1,6 +1,6 @@
 package net.edt.persistence.domain;
 
-import net.edt.persistence.generator.AlphanumericGenerator;
+import net.edt.util.SymbolsGenerator;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -17,9 +17,9 @@ public class SignInSessionCode {
 
     @Id
     @GeneratedValue(generator = "alphanumeric")
-    @GenericGenerator(name = "alphanumeric", strategy = "net.edt.persistence.generator.AlphanumericGenerator",
+    @GenericGenerator(name = "alphanumeric", strategy = "net.edt.persistence.generator.SymbolsHibernateGenerator",
                       parameters = {@Parameter(name = "length", value = "" + ID_LENGTH),
-                                    @Parameter(name = "symbols", value = AlphanumericGenerator.ALPHANUM)})
+                                    @Parameter(name = "symbols", value = SymbolsGenerator.ALPHANUM)})
     private String code;
 
     @Column(name = "start_time")
