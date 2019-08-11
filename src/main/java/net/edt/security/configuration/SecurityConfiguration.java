@@ -11,7 +11,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,6 +20,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.Collections;
 
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -57,19 +58,14 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                 .antMatchers(TOKEN_ENDPOINTS).authenticated()
-                .and()
-                .formLogin()
-                .successHandler(successHandler)
-                .failureHandler(failureHandler)
+//                .and()
+//                .formLogin()
+//                .successHandler(successHandler)
+//                .failureHandler(failureHandler)
                 .and()
                 .httpBasic()
                 .and()
                 .logout();
-        }
-
-        @Override
-        public void configure(WebSecurity web) throws Exception {
-            web.ignoring().antMatchers("/user/auth/register");
         }
 
         @Bean
@@ -103,12 +99,13 @@ public class SecurityConfiguration {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/user/auth/register").permitAll()
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/admin/**").hasAuthority(Role.ADMIN.getValue())
-                .and()
-                .formLogin()
-                .successHandler(successHandler)
-                .failureHandler(failureHandler)
+//                .and()
+//                .formLogin()
+//                .successHandler(successHandler)
+//                .failureHandler(failureHandler)
                 .and()
                 .httpBasic()
                 .and()
@@ -150,9 +147,9 @@ public class SecurityConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("" /* test client origins */);
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.setAllowedOrigins(Collections.singletonList("*") /* test client origins */);
+        config.setAllowedHeaders(Collections.singletonList("*"));
+        config.setAllowedMethods(Collections.singletonList("*"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
