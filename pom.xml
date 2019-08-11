@@ -64,13 +64,6 @@
             <version>3.4.0</version>
         </dependency>
 
-        <!--Apache Commons Lang 3-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
-        </dependency>
-
         <!--Apache Commons BeanUtils-->
         <dependency>
             <groupId>commons-beanutils</groupId>

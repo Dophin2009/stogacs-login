@@ -1,7 +1,5 @@
 package net.edt.persistence.domain;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -57,29 +55,6 @@ public class Meeting {
 
     public void setSignInSessions(Set<SignInSession> signInSessions) {
         this.signInSessions = signInSessions;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Meeting meeting = (Meeting) o;
-        return new EqualsBuilder()
-                .append(id, meeting.id)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(id)
-                .toHashCode();
     }
 
 }
