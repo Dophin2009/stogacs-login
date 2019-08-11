@@ -8,7 +8,7 @@ import net.edt.web.converter.RegistrationToUserConverter;
 import net.edt.web.converter.UserDtoConverter;
 import net.edt.web.dto.AuthTokenDto;
 import net.edt.web.dto.RegistrationContext;
-import net.edt.web.dto.UserDto;
+import net.edt.web.dto.RegistrationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,11 +48,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public UserDto registerUser(@Valid @RequestBody RegistrationContext context) {
+    public RegistrationResponse registerUser(@Valid @RequestBody RegistrationContext context) {
         User converted = registrationToUserConverter.convertToUser(context);
 
-        User newUser = userService.create(converted);
-        return userDtoConverter.convertToDto(newUser);
+        userService.create(converted);
+        RegistrationResponse response = new RegistrationResponse();
+        response.setMessage("Success! Request /user/auth/token to get access token");
+        return response;
     }
 
 }
