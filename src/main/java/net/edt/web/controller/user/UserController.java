@@ -1,14 +1,19 @@
 package net.edt.web.controller.user;
 
+import net.edt.persistence.domain.SignInSession;
 import net.edt.persistence.domain.User;
+import net.edt.persistence.service.SignInService;
 import net.edt.persistence.service.UserService;
 import net.edt.web.converter.SignInRequestDtoConverter;
+import net.edt.web.converter.SignInSessionDtoConverter;
 import net.edt.web.converter.UserDtoConverter;
 import net.edt.web.dto.SignInRequestDto;
+import net.edt.web.dto.SignInSessionDto;
 import net.edt.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +28,13 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private SignInService signInService;
+
+    @Autowired
     private UserDtoConverter userDtoConverter;
+
+    @Autowired
+    private SignInSessionDtoConverter signInSessionDtoConverter;
 
     @Autowired
     private SignInRequestDtoConverter signInRequestDtoConverter;
@@ -41,6 +52,12 @@ public class UserController {
                    .stream()
                    .map(signInRequestDtoConverter::convertToDto)
                    .collect(Collectors.toList());
+    }
+
+    @GetMapping("/session/{sessionId}")
+    public SignInSessionDto getSignInSession(@PathVariable String sessionId) {
+        SignInSession session = signInService.getSessionFromId(sessionId);
+        return signInSessionDtoConverter.convertToDto(session);
     }
 
     private User currentUser(Authentication authentication) {
