@@ -57,7 +57,13 @@ public class UserController {
     @GetMapping("/session/{sessionId}")
     public SignInSessionDto getSignInSession(@PathVariable String sessionId) {
         SignInSession session = signInService.getSessionFromId(sessionId);
-        return signInSessionDtoConverter.convertToDto(session);
+        SignInSessionDto dto = signInSessionDtoConverter.convertToDto(session);
+        dto.setSessionCodes(null);
+        dto.setCodeRefresh(0);
+        dto.setCodeRefreshOffset(0);
+        dto.setSignInRequestIds(null);
+
+        return dto;
     }
 
     private User currentUser(Authentication authentication) {
