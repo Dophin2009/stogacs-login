@@ -2,10 +2,13 @@ package net.edt.web.controller.admin;
 
 import net.edt.persistence.domain.SignInRequest;
 import net.edt.persistence.domain.SignInSession;
+import net.edt.persistence.domain.SignInSessionCode;
 import net.edt.persistence.service.SignInService;
 import net.edt.web.converter.SignInRequestDtoConverter;
+import net.edt.web.converter.SignInSessionCodeDtoConverter;
 import net.edt.web.converter.SignInSessionDtoConverter;
 import net.edt.web.dto.SignInRequestDto;
+import net.edt.web.dto.SignInSessionCodeDto;
 import net.edt.web.dto.SignInSessionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,9 @@ public class AdminSignInController {
     @Autowired
     private SignInRequestDtoConverter signInRequestDtoConverter;
 
+    @Autowired
+    private SignInSessionCodeDtoConverter signInSessionCodeDtoConverter;
+
     @GetMapping("/sessions")
     public List<SignInSessionDto> retrieveAllSessions() {
         List<SignInSession> sessions = signInService.getAllSessions();
@@ -39,6 +45,12 @@ public class AdminSignInController {
     public SignInSessionDto retrieveSession(@PathVariable(value = "id") String id) {
         SignInSession session = signInService.getSessionFromId(id);
         return signInSessionDtoConverter.convertToDto(session);
+    }
+
+    @GetMapping("/sessions/{id}/code/current")
+    public SignInSessionCodeDto retrieveCurrentCode(@PathVariable(value = "id") String id) {
+        SignInSessionCode code = signInService.getCurrentCode(id);
+        return signInSessionCodeDtoConverter.convertToDto(code);
     }
 
     @GetMapping("/requests")

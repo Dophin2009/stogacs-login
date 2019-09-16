@@ -3,6 +3,7 @@ package net.edt.persistence.service;
 import net.edt.persistence.domain.*;
 import net.edt.persistence.repository.*;
 import net.edt.web.exception.EntityNotFoundException;
+import net.edt.web.exception.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,39 @@ public class SignInService {
             throw new EntityNotFoundException("SignInSession with id '" + id + "' not found");
         }
         return foundSession.get();
+    }
+
+    public SignInSessionCode getCurrentCode(String id) {
+        SignInSession session = getSessionFromId(id);
+        LocalDateTime now = LocalDateTime.now();
+        if (!now.isAfter(session.getStartTime()) || !now.isBefore(session.getEndTime())) {
+            throw new InvalidFormatException("SignInSession with id '" + id + "' is not currently active");
+        }
+
+        Comparator<SignInSessionCode> signInSessionCodeComparator = (sc1, sc2) -> {
+            LocalDateTime startTime1 = sc1.getStartTime(), startTime2 = sc2.getStartTime();
+            if (startTime1.isAfter(startTime2)) {
+                return -1;
+            } else if (startTime1.isBefore(startTime2)) {
+                return 1;
+            }
+
+            LocalDateTime endTime1 = sc1.getEndTime(), endTime2 = sc2.getEndTime();
+            if (endTime1.isAfter(endTime2)) {
+                return -1;
+            } else if (endTime1.isBefore(endTime2)) {
+                return 1;
+            }
+            return 0;
+        };
+        Optional<SignInSessionCode> code =
+                session.getSessionCodes().stream()
+                       .filter(sc -> sc != null && now.isAfter(sc.getStartTime()) && now.isBefore(sc.getEndTime()))
+                       .min(signInSessionCodeComparator);
+        if (!code.isPresent()) {
+            throw new InvalidFormatException("No codes are currently active for the session with id '" + id + "'");
+        }
+        return code.get();
     }
 
     public List<SignInRequest> getAllRequests() {
