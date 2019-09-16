@@ -1,15 +1,19 @@
 package net.edt.web.controller.admin;
 
-import net.edt.web.converter.MeetingDtoConverter;
 import net.edt.persistence.domain.Meeting;
-import net.edt.web.exception.InvalidFormatException;
+import net.edt.persistence.domain.SignInSession;
 import net.edt.persistence.service.MeetingService;
+import net.edt.web.converter.MeetingDtoConverter;
+import net.edt.web.converter.SignInSessionDtoConverter;
 import net.edt.web.dto.MeetingDto;
+import net.edt.web.dto.SignInSessionDto;
+import net.edt.web.exception.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,6 +25,9 @@ public class MeetingController {
 
     @Autowired
     private MeetingDtoConverter meetingDtoConverter;
+
+    @Autowired
+    private SignInSessionDtoConverter signInSessionDtoConverter;
 
     @GetMapping
     public List<MeetingDto> retrieveAllMeetings() {
@@ -44,6 +51,17 @@ public class MeetingController {
         Meeting converted = meetingDtoConverter.convertToEntity(meetingDto);
         Meeting newMeeting = meetingService.create(converted);
         return meetingDtoConverter.convertToDto(newMeeting);
+    }
+
+    @GetMapping("/{id}/sessions")
+    public List<SignInSessionDto> retrieveMeetingSessions(@PathVariable(value = "id") String id) {
+        try {
+            Meeting meeting = meetingService.getFromId(Long.parseLong(id));
+            Set<SignInSession> signInSessions = meeting.getSignInSessions();
+            return signInSessions.stream().map(signInSessionDtoConverter::convertToDto).collect(Collectors.toList());
+        } catch (IllegalArgumentException ex) {
+            throw createInvalidMeetingIDException(id);
+        }
     }
 
     private InvalidFormatException createInvalidMeetingIDException(String id) {
