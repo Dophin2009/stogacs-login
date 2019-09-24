@@ -1,8 +1,6 @@
 package net.edt.web.dto;
 
 import net.edt.persistence.domain.SignInRequest;
-import net.edt.web.validation.constraint.DateTimeFormat;
-import net.edt.web.validation.constraint.DateTimeType;
 import net.edt.web.validation.constraint.EmptyOrSize;
 
 import javax.validation.constraints.NotNull;
@@ -21,9 +19,9 @@ public class SignInRequestDto {
     @NotNull(message = "must not be null")
     private String userId;
 
-    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
+//    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
     @NotNull(message = "must not be null")
-    private String time;
+    private Long time;
 
     @NotNull(message = "must not be null")
     private String deviceInfo;
@@ -52,11 +50,11 @@ public class SignInRequestDto {
         this.userId = userId;
     }
 
-    public String getTime() {
+    public @NotNull(message = "must not be null") Long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(@NotNull(message = "must not be null") Long time) {
         this.time = time;
     }
 

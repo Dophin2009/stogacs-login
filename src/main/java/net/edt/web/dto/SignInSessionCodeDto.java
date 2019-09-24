@@ -1,22 +1,27 @@
 package net.edt.web.dto;
 
 import net.edt.persistence.domain.SignInSessionCode;
-import net.edt.web.validation.constraint.DateTimeFormat;
-import net.edt.web.validation.constraint.DateTimeType;
 import net.edt.web.validation.constraint.EmptyOrSize;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 public class SignInSessionCodeDto {
 
     @EmptyOrSize(min = SignInSessionCode.ID_LENGTH, max = SignInSessionCode.ID_LENGTH)
     private String code;
 
-    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
-    private LocalDateTime startTime;
+//    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
+    private Long startTime;
 
-    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
-    private LocalDateTime endTime;
+//    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
+    private Long endTime;
+
+    public long getEndsIn() {
+        long now = LocalDateTime.now(ZoneId.ofOffset("UTC", ZoneOffset.UTC)).toEpochSecond(ZoneOffset.UTC);
+        return endTime - now;
+    }
 
     public String getCode() {
         return code;
@@ -26,19 +31,19 @@ public class SignInSessionCodeDto {
         this.code = code;
     }
 
-    public LocalDateTime getStartTime() {
+    public Long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(Long startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public Long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(Long endTime) {
         this.endTime = endTime;
     }
 

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.*;
 
 @Service
@@ -42,7 +44,7 @@ public class SignInService {
 
     public SignInSessionCode getCurrentCode(String id) {
         SignInSession session = getSessionFromId(id);
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneId.ofOffset("UTC", ZoneOffset.UTC));
         if (!now.isAfter(session.getStartTime()) || !now.isBefore(session.getEndTime())) {
             throw new InvalidFormatException("SignInSession with id '" + id + "' is not currently active");
         }
@@ -109,7 +111,7 @@ public class SignInService {
     public SignInRequest create(SignInRequest request) {
         replaceUser(request);
         replaceSession(request);
-        request.setTime(LocalDateTime.now());
+        request.setTime(LocalDateTime.now(ZoneId.ofOffset("UTC", ZoneOffset.UTC)));
 
         // success validation could probably be simplified significantly
         LocalDateTime requestTime = request.getTime();

@@ -1,13 +1,10 @@
 package net.edt.web.configuration;
 
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.Provider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 @Configuration
@@ -17,36 +14,45 @@ public class ModelMapperBean {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
+        ZoneId utcZone = ZoneId.ofOffset("UTC", ZoneOffset.UTC);
+
         // Provider and converters for LocalDate
-        Provider<LocalDate> localDateProvider = request -> LocalDate.now();
-        Converter<String, LocalDate> stringLocalDateConverter = ctx -> {
+        modelMapper.createTypeMap(Long.class, LocalDate.class).setProvider(request -> LocalDate.now());
+        modelMapper.addConverter(ctx -> {
+            Long source = ctx.getSource();
+            return source == null ? null : Instant.ofEpochSecond(source).atZone(utcZone).toLocalDate();
+        }, Long.class, LocalDate.class);
+        modelMapper.addConverter(ctx -> ctx.getSource().toEpochDay(), LocalDate.class, Long.class);
+
+        // Provider and converters for LocalDateTime
+        modelMapper.createTypeMap(Long.class, LocalDateTime.class).setProvider(request -> LocalDateTime.now());
+        modelMapper.addConverter(ctx -> {
+            Long source = ctx.getSource();
+            return source == null ? null : Instant.ofEpochSecond(source).atZone(utcZone).toLocalDateTime();
+
+        }, Long.class, LocalDateTime.class);
+        modelMapper.addConverter(ctx -> ctx.getSource().toEpochSecond(ZoneOffset.UTC), LocalDateTime.class, Long.class);
+
+        // Provider and converters for LocalDate
+        modelMapper.createTypeMap(String.class, LocalDate.class).setProvider(request -> LocalDate.now());
+        modelMapper.addConverter(ctx -> {
             String source = ctx.getSource();
             DateTimeFormatter format = DateTimeFormatter.ISO_DATE;
             return source == null ? null : LocalDate.parse(source, format);
-        };
-
-        Converter<LocalDate, String> localDateStringConverter = ctx -> ctx.getSource()
-                .format(DateTimeFormatter.ISO_DATE);
-
-        modelMapper.createTypeMap(String.class, LocalDate.class).setProvider(localDateProvider);
-        modelMapper.addConverter(stringLocalDateConverter, String.class, LocalDate.class);
-        modelMapper.addConverter(localDateStringConverter, LocalDate.class, String.class);
+        }, String.class, LocalDate.class);
+        modelMapper.addConverter(ctx -> ctx.getSource().format(DateTimeFormatter.ISO_DATE),
+                                 LocalDate.class, String.class);
 
         // Provider and converters for LocalDateTime
-        Provider<LocalDateTime> localDateTimeProvider = request -> LocalDateTime.now();
-        Converter<String, LocalDateTime> stringLocalDateTimeConverter = ctx -> {
+        modelMapper.createTypeMap(String.class, LocalDateTime.class).setProvider(request -> LocalDateTime.now());
+        modelMapper.addConverter(ctx -> {
             String source = ctx.getSource();
             DateTimeFormatter format = DateTimeFormatter.ISO_DATE_TIME;
             return source == null ? null : LocalDateTime.parse(source, format);
 
-        };
-
-        Converter<LocalDateTime, String> localDateTimeStringConverter = ctx -> ctx.getSource()
-                .format(DateTimeFormatter.ISO_DATE_TIME);
-
-        modelMapper.createTypeMap(String.class, LocalDateTime.class).setProvider(localDateTimeProvider);
-        modelMapper.addConverter(stringLocalDateTimeConverter, String.class, LocalDateTime.class);
-        modelMapper.addConverter(localDateTimeStringConverter, LocalDateTime.class, String.class);
+        }, String.class, LocalDateTime.class);
+        modelMapper.addConverter(ctx -> ctx.getSource().format(DateTimeFormatter.ISO_DATE_TIME),
+                                 LocalDateTime.class, String.class);
 
         return modelMapper;
     }

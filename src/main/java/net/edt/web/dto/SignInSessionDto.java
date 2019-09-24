@@ -2,8 +2,6 @@ package net.edt.web.dto;
 
 import net.edt.persistence.domain.SignInRequest;
 import net.edt.persistence.domain.SignInSession;
-import net.edt.web.validation.constraint.DateTimeFormat;
-import net.edt.web.validation.constraint.DateTimeType;
 import net.edt.web.validation.constraint.EmptyOrSize;
 
 import javax.validation.constraints.NotNull;
@@ -17,12 +15,12 @@ public class SignInSessionDto {
     private String id;
 
     @NotNull(message = "must not be null")
-    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
-    private String startTime;
+//    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
+    private Long startTime;
 
     @NotNull(message = "must not be null")
-    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
-    private String endTime;
+//    @DateTimeFormat(format = "yyyy-MM-dd'T'HH:mm:ss", type = DateTimeType.DATE_TIME)
+    private Long endTime;
 
     @NotNull(message = "must not be null")
     private Long meetingId;
@@ -44,19 +42,19 @@ public class SignInSessionDto {
         this.id = id;
     }
 
-    public String getStartTime() {
+    public Long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Long startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public Long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Long endTime) {
         this.endTime = endTime;
     }
 
